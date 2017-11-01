@@ -1,0 +1,154 @@
+<ion-view view-title="User Profile">
+<ion-content class="home-page userskill has-tabs">
+
+    <div class="profile-wrap">
+        <div class="profile-banner img-con">
+            
+             
+              <img id="coverprofileImage" class="uImage"  ng-src="{{profileCoverImagePath}}{{userInfo.cover_image}}"  err-src="img/default_cover.jpg" alt="profile-img" class="full-image"/>
+
+              <img  id="cvImg" width="100" height="100" style="display:none">
+
+            <div class="profile-img userp-image">
+               <img  id="fbprofileImage"   ng-src="{{profileImagePath}}{{userInfo.prof_image}}" err-src="img/user_default.jpg" alt="profile-img"/>
+
+                
+                 <img  id="profileImage" width="100" height="100" style="display:none">
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col user-detail">
+                <h2 class="user-title capitalize_title">{{userInfo.first_name |capitalize}} {{userInfo.last_name |capitalize}}</h2>
+                <p>{{userInfo.about_me}}</p>
+
+                <i class="fa fa-star margin-r-5" ng-repeat="i in getTimes(profile_rating_plus) track by $index"></i>
+                 <i class="fa fa-star-half-o margin-r-5" ng-repeat="i in getTimes(profile_rating_half) track by $index"></i>
+                 <i class="fa fa-star-o margin-r-5" ng-repeat="i in getTimes(profile_rating_loss) track by $index"></i> 
+
+                <ul class="icon-list user-rating" ng-if="profile_rating_plus">
+
+                    
+                    <li ng-repeat="i in getNumber(profile_rating_plus) track by $index">
+                        <a href="javascript:void(0)">
+                            <i class="icon ion-ios-star"></i>
+                        </a>
+                    </li>
+                    
+                    
+                    <li ng-if="profile_rating_half">
+                        <a href="javascript:void(0)">
+                            <i class="icon ion-ios-star-half"></i>
+                        </a>
+                    </li>
+                    <li ng-repeat="i in getNumber(profile_rating_loss) track by $index">
+                        <a href="javascript:void(0)">
+                            <i class="icon ion-ios-star-outline"></i>
+                        </a>
+                    </li>
+                    
+               </ul>
+               <ul class="icon-list user-rating" ng-if="!profile_rating_plus">
+                    
+                   
+                    <li>
+                        <a href="javascript:void(0)">
+                            <i class="icon ion-ios-star-outline"></i>
+                        </a>
+                    </li><li>
+                        <a href="javascript:void(0)">
+                            <i class="icon ion-ios-star-outline"></i>
+                        </a>
+                    </li><li>
+                        <a href="javascript:void(0)">
+                            <i class="icon ion-ios-star-outline"></i>
+                        </a>
+                    </li><li>
+                        <a href="javascript:void(0)">
+                            <i class="icon ion-ios-star-outline"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">
+                            <i class="icon ion-ios-star-outline"></i>
+                        </a>
+                    </li>
+                    
+               </ul>
+            </div>
+        </div>
+        
+        <div class="row user-status text-center">
+            <div class="col col-33" ng-show="userInfo.role[1]">
+   
+                <h3>{{complted_job}}</h3>
+                <p>Completed</p>
+            </div>
+            <div class="col {{userInfo.role[1]==true?'col-33':'col-50'}}">
+                <h3>{{posted_job}}</h3>
+                <p>Posted</p>
+            </div>
+            <div class="col {{userInfo.role[1]==true?'col-33':'col-50'}}" ng-click="myReviews(userInfo._id)">
+                <h3>{{review}}</h3>
+                <p>Reviews</p>
+            </div>
+        </div>
+        <div class="your-skill" ng-show="userInfo.role[1]">    
+            <h4 class="title-wrap capitalize_title">{{userInfo.first_name | capitalize }}'s Skills</h4>
+            <ul class="icon-list skill-tags">
+                <li ng-repeat="userSkill in userInfo.skill" class="capitalize_title">
+                                   {{userSkill.skill | capitalize }}
+                </li>
+               
+            </ul>
+            <div class="row responsive-sm">
+            <div class="col">
+              <h1 ng-show="userInfo.skill.length ==0" class="nothing-found-block nothing-found-post">
+                <!-- <i class="icon ion-android-alert"></i> --> Didn't set any Skill yet.
+              </h1>
+            </div>
+     </div>
+        </div>
+
+        <div class="your-Reviews">  
+            <h4 class="title-wrap capitalize_title">{{userInfo.first_name | capitalize }}'s Reviews<a class="cursor" href="#" ng-click="getAllReviews(userInfo._id)" ><span class="add-offer" ng-if="reviewList.length >=2">View all</span></a></h4>
+
+
+            
+            <div class="row" ng-repeat="review in reviewList |orderObjectBy:date:true| limitTo:1">
+                <div class="col-20">
+                    <div class="item item-avatar">
+                      <!-- <img ng-if="!review.job_author_id.prof_image" src="img/review.png"> -->
+                      <img src="{{profileImagePath}}{{review.job_author_id.prof_image}}" err-src="img/user_default.jpg">
+                    </div>
+                </div>
+                
+                <div class="col-80">
+                     
+                    <h2 class="review-name capitalize_title" >{{review.job_author_id.first_name | capitalize }} {{review.job_author_id.last_name | capitalize }}</h2>
+                    
+                    <ul class="icon-list user-rating" >
+                         <li ng-repeat="i in getNumber(review.value) track by $index">
+                        <a href="javascript:void(0)">
+                            <i class="icon ion-ios-star"></i>
+                        </a>
+                    </li>
+                        
+                        <li ng-repeat="i in getNumber(review.max-review.value) track by $index">
+                            <i class="icon ion-ios-star-outline"></i>
+                        </li>
+                    </ul>
+                   <p><span>{{review.created_date | date}}</span>{{review.review}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row responsive-sm" ng-show="reviewList.length==0">
+            <div class="col">
+              <h1 ng-show="reviewList.length==0" class="nothing-found-block nothing-found-post">
+                <!-- <i class="icon ion-android-alert"></i> -->  No Reviews yet.
+              </h1>
+            </div>
+     </div>
+  </ion-content>
+  
+</ion-view>

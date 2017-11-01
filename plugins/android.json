@@ -1,0 +1,71 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        },
+        "cordova.plugins.diagnostic": {
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        },
+        "cordova-plugin-contacts": {
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        },
+        "cordova-plugin-x-socialsharing": {
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        },
+        "phonegap-plugin-push": {
+            "SENDER_ID": "692191949673",
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-nativeaudio": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "com.dooble.phonertc": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.ionicframework.oddjobs123132"
+        }
+    }
+}

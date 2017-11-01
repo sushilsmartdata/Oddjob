@@ -1,0 +1,56 @@
+<ion-modal-view class="rate-modal review-modal">
+  <!-- <div class="bar bar-header item-input-inset bar-calm">
+    <button class="button button-icon icon ion-ios-arrow-left" ng-click="closeModal('search')"></button>
+    Call {{userToCall}} 
+
+  </div> -->
+ <!--  <button class="button button-icon icon"
+            ng-class="{ 'ion-ios7-mic-off': muted, 'ion-ios7-mic': !muted }"
+            ng-click="toggleMute()"
+            >Mute</button> -->
+   
+
+  <ion-content class="padding has-header">
+  
+    <div class="calling-container call_txt_cen" ng-if="isCalling && !callInProgress && !callIgnored && !callEnded">
+      <img  src="{{profileImagePath}}{{userProfile}}" alt=""/>
+      <p>Calling to <span class="balanced">{{ userToCall }}</span>...</p>
+
+      <button class="button button-assertive" ng-click="ignore()">
+        Nevermind
+      </button>
+    </div>
+
+    <div class="calling-container call_txt_cen" ng-if="!isCalling && !callInProgress && !callIgnored && !callEnded">
+     <img  src="{{profileImagePath}}{{peer_image}}" alt=""/>
+      <p><span class="balanced">{{ peer_id }}</span> is calling you</p>
+
+      <button class="button button-positive" ng-click="answer()">
+        Answer
+      </button>
+
+      <button class="button button-assertive" ng-click="ignore()">
+        Ignore
+      </button>
+    </div>
+
+    <div class="calling-container call_txt_cen" ng-if="callInProgress && !callIgnored && !callEnded">
+      <p>Call in progress...</p>
+
+      <button class="button button-assertive" ng-click="end()">
+        End
+      </button>
+    </div>
+
+    <div ng-if="callIgnored && !callEnded && !callInProgress">
+      <p>Call Ignored</p>
+      <button class="button button-positive button-block go-back" ng-click="closeModal()">Go back</button>
+    </div>
+
+    <div ng-if="callEnded && !callIgnored && !callInProgress">
+      <p>Call Ended</p>
+      <button class="button button-positive button-block go-back" ng-click="closeModal()">Go back</button>
+    </div>
+
+  </ion-content>
+</ion-modal-view>

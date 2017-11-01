@@ -1,0 +1,140 @@
+  <ion-view view-title="Make Payment">
+  <ion-content class="home-page has-tabs">
+    <div class="profile-wrap">
+          <div class="profile-banner job-wrap">
+              <img alt="Profile Banner" src="img/credit-card.jpg"  class="full-image"/>
+          </div>
+          <div class="total-budget">
+            <div class="col">
+              <h3>Budget</h3>
+            </div>
+            <div class="row">
+              <div class="col col-33">
+                    <div class="ammout">
+                        <span>{{budget | currency}}</span>
+                    </div>
+                    <p class="sum-total sum-icon"> <i class="ion-android-add"></i></p>
+                </div>
+                <div class="col col-33">
+                  <div class="comm-add">
+                        <p>{{commission.job_poster}}%</p>
+                        <p>for oddjob</p>
+                    </div>
+                    
+                </div>
+                <div class="col col-33">
+                    <div class="ammout final-right">
+                        <span>{{actualCost | currency}}</span>
+                    </div>
+                    <p class="sum-total arrow-icon"><i class="ion-arrow-right-c"></i></p>
+                </div>
+            </div>
+            
+    </div>
+    <div class="button-bar custom-tab">
+
+            <a  style="cursor:pointer" ng-click="credit_card()"
+                class="button button-stable" ng-class="{'active':creditCard}">Add Credit Card</a>
+            <a  style="cursor:pointer" ng-click="card_listing()"
+                class="button button-stable" ng-class="{'active':listCreditcard}">Saved Credit Card</a>
+    </div>
+        <div class="profile-wrap paymentform" ng-show="creditCard">
+        <div class="form-wrap input">
+        <form name="buyCreditForm" class="buyCreditForm" novalidate>
+          <div class="row">
+              <div class="col">
+                  <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : buyCreditForm.cc_number.$invalid && !buyCreditForm.cc_number.$pristine }">
+                   <input type="tel" name="cc_number" ng-model="details.number" placeholder="Card Number" ng-minlength="15" ng-maxlength="16">
+                    </label>
+                    <div class="form-error" ng-show="buyCreditForm.cc_number.$invalid && !buyCreditForm.cc_number.$pristine" >Card Numer is should be valid
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col col-33">
+                   
+                    <div class="select-style">
+                      <select ng-model="details.exp_month" name="details.expire_month" required>
+                        <option value="Expiry Month">Month</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                      </select>
+                    </div>
+                </div>
+                <div class="col col-33">
+                   <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : buyCreditForm.expire_year.$invalid && !buyCreditForm.expire_year.$pristine }">
+                      <!--span class="input-label">CVV</span>-->
+                      <input type="number" name="expire_year" ng-model="details.exp_year" ng-minlength="4" ng-maxlength="4" placeholder="Expiry Year" required>
+                    </label>
+                    <div class="form-error" ng-show="buyCreditForm.expire_year.$invalid && !buyCreditForm.expire_year.$pristine">Year Should be Valid
+                    </div>
+                </div>
+                <div class="col col-33">
+                    <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : buyCreditForm.cvv.$invalid && !buyCreditForm.cvv.$pristine }">
+                      <!--span class="input-label">CVV</span>-->
+                      <input type="tel" name="cvv" ng-model="details.cvc" placeholder="CVV" ng-minlength="3" ng-maxlength="3" required>
+                    </label>
+                    <div class="form-error" ng-show="buyCreditForm.cvv.$invalid && !buyCreditForm.cvv.$pristine" >CVV Number Should be 3 digits
+                    </div>
+                </div>
+            </div>
+            <div class="post-job " >
+              <button class="button post-button credit-btn" ng-disabled="buyCreditForm.$invalid" ng-click="makePayment(details)">
+                Make Payment
+              </button>
+            </div>
+
+          </form>
+          </div>
+        </div>
+        <div class="list" ng-show="listCreditcard">
+        
+            <div> 
+            <form name="makepayment" class="saved-card">
+                <ion-list>
+
+                  <ion-item ng-repeat="creditCard in creditCards">
+      
+                 <ion-radio  name="card_id"
+                data-ng-model="details.card_id" 
+                data-ng-value="creditCard.id"
+                ng-init="$index==0?(details.card_id=creditCard.id):''">
+                  <span class="card-type">Credit Card  :</span><span class="card-holder">{{userInformation.first_name}} {{userInformation.last_name}}</span>
+        
+
+               </ion-radio>{{choice}}
+               
+               <div class="card-wrap">
+                
+                  <span class="card-name"><img src="img/{{creditCard.brand}}.png" /></span>
+                  <span class="card-number">XXXXXXXX{{creditCard.last4}}</span>
+                    <span class="cvv-value">
+                     <input type="text" name="cvv" ng-model="details.card_cvv" placeholder="CVV" ng-minlength="3" ng-maxlength="3" required class="cvv-input">
+                   </span>
+                </div>
+                  
+              
+                   
+                  </ion-item>
+                        
+                </ion-list>
+            </form>
+            </div>
+            <div class="post-job" ng-if="creditCards.length>0">
+              <button class="button post-button credit-btn" ng-disabled="makepayment.$invalid" ng-click="makePayment(details)">
+                Make Payment
+              </button>
+            </div>
+        </div>
+  </ion-content>
+</ion-view>

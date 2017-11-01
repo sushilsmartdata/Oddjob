@@ -1,0 +1,81 @@
+<ion-view view-title="Post Comment">
+ 
+  <ion-content class="home-page has-tabs msgManagement" delegate-handle="userMessageScroll">
+    <div class="profile-wrap">
+        
+              <div class="box box-warning direct-chat direct-chat-primary">
+              
+                  <!-- /.box-header -->
+                  <div class="box-body">
+                    <!-- Conversations are loaded here -->
+                    <div class="direct-chat-messages" ng-repeat="comment in comments.comment">
+                      <!-- Message. Default to the left -->
+
+                      <div class="direct-chat-msg" ng-if="comments.userid._id==comment.userid">
+                        <div class="direct-chat-info clearfix">
+                          <span class="direct-chat-name pull-left">{{comments.userid.first_name | capitalize }}  {{comments.userid.last_name | capitalize }}</span>
+                          <span class="direct-chat-timestamp pull-right">{{comment.comment_date | date :'medium'}}</span>
+                        </div>
+                        <!-- /.direct-chat-info -->
+
+                        <img  ng-click="userInfoData(comment.userid)"  class="direct-chat-img cursor" src="{{profileImagePath}}{{comments.userid.prof_image}}" err-src="img/user_default.jpg" alt="message user image">
+                       <!--  <img  ng-click="userInfoData(comment.userid)" ng-if="!comments.userid.prof_image" class="direct-chat-img cursor" src="img/user_default.jpg" alt="message user image"> -->
+                        <!-- {{comment}} -->
+                        <!-- /.direct-chat-img -->
+                        <div class="direct-chat-text">
+                          {{comment.text}} </div>
+                        <!-- /.direct-chat-text -->
+                      </div>
+                      <!-- /.direct-chat-msg -->
+
+                      <!-- Message to the right -->
+                      <div class="direct-chat-msg right" ng-if="comments.authorid._id==comment.userid">
+                        <div class="direct-chat-info clearfix">
+                          <span class="direct-chat-name pull-right">{{comments.authorid.first_name | capitalize }}  {{comments.authorid.last_name | capitalize }}</span>
+                          <span class="direct-chat-timestamp pull-left">{{comment.comment_date | date : 'medium' }}</span>
+                        </div>
+                        
+                        <img ng-if="comments.authorid.prof_image" class="direct-chat-img" src="{{profileImagePath}}{{comments.authorid.prof_image}}" alt="message user image">
+                        <img ng-if="!comments.authorid.prof_image" class="direct-chat-img" src="img/user_default.jpg" alt="message user image">
+                        <!-- {{comment}}} -->
+                        <div class="direct-chat-text">
+                          {{comment.text}}
+                        </div>
+                       
+                      </div> 
+                      <!-- /.direct-chat-msg -->
+
+                     
+
+                    </div>
+                    
+                  </div>
+                  <!-- /.box-body -->
+                  
+                <!-- /.box-footer-->
+              </div>
+              <!--/.direct-chat -->
+           
+    </div>
+  </ion-content>
+  <div class="box-footer">
+
+                 <form name="form" class="comment-form row">
+                       <div class="col col-80">
+                          <div class="input-group">
+                              <textarea name="message" id="comment" ng-model="replycomment" placeholder="Comment..." class="form-control" required>
+                                </textarea>
+                                <div class="form-error" ng-show="form.message.$invalid && !form.message.$pristine" >
+                                         <!-- Please enter comment. -->
+                                 </div>  
+                            </div>
+                        </div>
+                        <div class="col col-20">
+                          <span class="input-group-btn">
+                            <button class="send-btn" ng-disabled="form.message.$invalid" ng-click="postComment(replycomment,comments._id);replycomment=''" type="button" class="btn btn-warning btn-flat" ><i class="icon ion-android-send"></i></button>
+                          </span>
+                        </div>
+                      </form>           
+                  </div>
+  
+</ion-view>

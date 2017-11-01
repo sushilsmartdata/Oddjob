@@ -1,0 +1,98 @@
+<!-- <ion-view view-title="My Jobs" ng-init="myjob()"> -->
+<ion-view view-title="My Jobs">
+
+
+  <ion-content class="home-page has-tabs">
+    <div class="profile-wrap">
+        <div class="search-bar">
+            <div class="list">
+              <label class="item item-input" ng-init="blur='true'">
+                <input type="text" ng-focus="focus=true;blur=false;" ng-blur="blur=true;focus=false;" ng-model="query" placeholder="" id="searchbar">
+                <span ng-show="blur" class="input-top"><i class="icon ion-ios-search"></i>Search</span>
+              </label>
+            </div>
+        </div>
+      
+        
+        <div class="your-Reviews offers" >
+             <h4 class="title-wrap myjob-title">Jobs I Posted </h4>
+        </div>
+        <div class="your-Reviews findjobs"> 
+            <ion-list class="offer-wrap find-wrap">
+                 <ion-item ng-repeat="job in jobs | filter:query | orderBy:propertyName:reverse" class="no-padding">
+
+                 <div class="row">
+                        <div class="col-20">
+                            <div class="job-wrap ">
+                                <div class="img-wrap item-avatar">
+                         <img class="jobimage" ng-if="job.image" src="{{jobImagePath}}{{job.image}}" alt="" class="img-1">
+                                    <img class="jobimage" ng-if="!job.image" src="img/defaultpost.png" alt="" class="img-1">
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-80">
+                            <h2 class="review-name">{{job.title}}<span class="accept">{{job.budget | currency}}</span></h2>
+                            <div class="div-wrap">
+                                <div class="price-accept">
+                                    <div class="loaction post-date">
+                                        <img alt="" src="img/small-msg.png"><span>Due : {{job.due_date | date}}</span>
+                                    </div>
+                                    <div class="loaction post-date">
+                                        <img alt="" src="img/globe.png"><span>{{job.jobtype[0].name}}</span>
+                                    </div>
+                                    <div class="loaction offers-comment">
+                                        <img alt="" src="img/small-msg.png"><span>{{job.offers.length}} Offers</span><span> | </span><span>14 Comments</span>
+                                    </div>
+                                </div>
+                                <div class="next">
+                                    <a  href="#/app/viewjob/{{job._id}}"><i class="icon ion-chevron-right"></i></a>
+                                    <div class="tags-display">
+                                        <span ng-if="job.job_status==1" class="open">Open</span>
+                                        <span ng-if="job.job_status==2" class="assigned">Assigned</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ion-option-button class="button-positive"
+                    ng-click="editjob(job._id)"
+                             >
+             Edit
+          
+          </ion-option-button>
+          <ion-option-button class="button-assertive"
+                             ng-click="deletejob(job._id)">
+            Delete
+          </ion-option-button>   
+               </ion-item>
+              <!--  <ion-infinite-scroll on-infinite="addMoreItem()" ng-if="jobs.length > numberOfItemsToshow" >
+                        <ion-infinite-scroll-content
+                          loadingSpinner="bubbles"
+                          loadingText="Loading more data...">
+                        </ion-infinite-scroll-content>
+                  </ion-infinite-scroll> -->
+                  <span class="scroll-not-found"  ng-if="jobs.length == numberOfItemsToshow || jobs.length < numberOfItemsToshow">
+                      No more Jobs :)
+                  </span>
+                  
+
+            </ion-list>
+        </div>
+        <div class="row responsive-sm">
+                  <div class="col">
+                    <h1 ng-show="jobs.length ==0" class="nothing-found-myjob-block">
+                      <!-- <i class="icon ion-android-alert"></i> --> No Jobs Listed.
+                    </h1>
+                  </div>
+        </div>
+
+
+       
+       
+    </div>
+  </ion-content>
+ 
+</ion-view>

@@ -1,0 +1,73 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "com.dooble.phonertc": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-contacts": {
+            "CONTACTS_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-nativeaudio": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-x-socialsharing": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova.plugins.diagnostic": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "phonegap-plugin-push": {
+            "SENDER_ID": "692191949673",
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+        "cordova-plugin-geolocation": {
+            "GEOLOCATION_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        },
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.smartData.OddJob"
+        }
+    }
+}

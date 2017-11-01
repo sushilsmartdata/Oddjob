@@ -1,0 +1,141 @@
+<ion-side-menus  enable-menu-with-back-views="false"  ng-controller="CallCtrl">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button id="{{uSkill === true ? 'sbtn' : 'hbtn'}}">
+      
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button ng-if="!uSkill"  class="button button-icon button-clear ion-navicon"   menu-toggle="left">
+        
+        </button>
+        
+        <i ng-if="uSkill" class="icon ion-chevron-left up-skill" ng-click="upSkill()"></i>
+
+        
+      </ion-nav-buttons>
+      
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+   
+         
+    <ion-header-bar class="bar-stable">
+      <img class="menu-logo" style="height: 40px;
+    margin-top: 15px;" src="img/oddjob.png" >
+    </ion-header-bar>
+    <ion-content class="has-tabs">
+   
+      <ion-list>
+      <ion-item menu-close ui-sref="app.home">
+          Home
+        </ion-item>
+        <ion-item menu-close ui-sref="app.addprofile">
+          Profile
+        </ion-item>
+
+        <ion-item menu-close  ng-click="getAllReviews(userInformation._id)"> 
+           Reviews
+        </ion-item>
+        
+
+        <ion-item menu-close  ui-sref="app.skills" ng-if="userInformation.role[0]==true">
+          Post Jobs
+        </ion-item>
+
+        <ion-item menu-close  ui-sref="app.postlist" ng-if="userInformation.role[1]==true">
+          Find Jobs
+        </ion-item> 
+
+        <ion-item menu-close  ng-click="jobhistory()">
+          History
+        </ion-item> 
+
+
+        <ion-item menu-close  ui-sref="app.payment">
+          Add Bank Account
+        </ion-item>
+
+        <ion-item menu-close  ui-sref="app.transaction">
+           Transactions 
+        </ion-item>
+
+
+        <ion-item menu-close  ui-sref="app.feedback">
+           Feedback 
+        </ion-item>
+
+        <ion-item menu-close ui-sref="app.settings" >
+          Settings
+        </ion-item>
+
+        <ion-item menu-close ng-click="helpPage()">
+          Help
+        </ion-item>
+
+        <ion-item menu-close ng-click="termPage()">
+          Terms of Use
+        </ion-item>
+
+        
+
+         <ion-item menu-close ng-click="pickContactUsingNativeUI()">
+          Invite Friends
+        </ion-item>
+
+        <ion-item menu-close ng-click="logout()" >
+          Logout
+        </ion-item>
+        
+      </ion-list>
+       
+    </ion-content>
+  </ion-side-menu>
+
+</ion-side-menus>
+<!-- <div class="bar bar-footer" ng-show="skillViewStatus">
+     <div ng-if="currentItem=='app.skills'" class="searchbar_btm skillsearch">
+            <span>Can't Find What you are Looking For?</span>
+                    <div class="search-bar">
+            <div class="list" ng-controller="SkillsCtrl">
+              <label class="item item-input" ng-init="blur='true'">
+                <input type="text"  ng-model="query"  id="searchbar" ng-keyup="getCategoryList(query)">
+                <span ng-hide="query.length>0" class="input-top"><i class="icon ion-ios-search"></i>Search</span>
+              </label>
+            </div>
+        </div>
+              </div>
+</div> -->
+ <ion-footer class="bar bar-footer home-footer">
+
+
+     <div class="row">
+      <div class="col col-20">
+          <a ui-sref="app.myjob" ng-click="currentMenu('app.myjob')" ng-class="{'active': currentItem=='app.myjob'}" class="tilt"><i class="icon ion-hammer"></i><p>My Jobs</p></a>
+
+        </div>
+        <div class="col col-20">
+          <a ui-sref="app.postlist" ng-click="currentMenu('app.postlist')" ng-class="{'active': currentItem=='app.postlist'}" ng-if="userInformation.role[1]"><i class="icon ion-ios-search-strong"></i><p>Find Jobs</p></a>
+          <a ui-sref="app.skills" ng-click="currentMenu('app.skills')" ng-class="{'active': currentItem=='app.skills'}" ng-if="!userInformation.role[1]"><img ng-if="currentItem!='app.skills' && !userInformation.role[1]" src="img/new-job.png"><img ng-if="currentItem=='app.skills'" src="img/add-job.png"><p>Post Job</p></a>
+
+            
+        </div>
+        <div class="col col-20">
+          <a ui-sref="app.home" ng-class="{'active': currentItem=='app.home'}" ng-click="currentMenu('app.home')"><i class="icon ion-ios-home-outline"></i><p>Home</p></a>
+            
+        </div>
+        <div class="col col-20">
+          <a ui-sref="app.messages" ng-class="{'active': currentItem=='app.messages'}" ng-click="currentMenu('app.messages')"><i class="icon ion-ios-chatboxes-outline"></i> <p>Message</p></a>
+           
+        </div>
+        <div class="col col-20">
+
+          <a ng-click="toggleLeft()"><i class="icon ion-android-more-horizontal"></i> <p>More</p></a>
+           
+        </div>
+
+     </div>
+
+  </ion-footer>

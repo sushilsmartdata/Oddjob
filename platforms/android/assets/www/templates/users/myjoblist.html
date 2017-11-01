@@ -1,0 +1,185 @@
+<ion-view view-title="{{typeJob}}" ng-init="jobListing()">
+<ion-content class="home-page has-tabs">
+    <div class="profile-wrap" >
+        <div class="search-bar">
+            <div class="list">
+              <label class="item item-input" ng-init="blur='true'">
+                <input type="text"  ng-model="query"  id="searchbar">
+                <span ng-hide="query.length>0" class="input-top"><i class="icon ion-ios-search"></i>Search</span>
+              </label>
+            </div>
+        </div>
+       
+        
+        <div class="your-Reviews findjobs myjob"> 
+            <ion-list class="offer-wrap find-wrap">
+                 <ion-item ng-repeat="Job in myJobs" class="no-padding" >
+
+           
+                   <div class="row" ng-click="detailJob(Job._id)">
+                        <div class="col-30">
+                            <div class="job-wrap left_img_p">
+                                <div class="img-wrap item-avatar left_cir_img">
+                                
+                                <span class="table-cell">
+                                      <img ng-if="Job.category[0].icon" class="jobimage img-1" ng-src="{{skillIconImagePath}}{{Job.category[0].icon}}" alt=""/>
+                                      <img ng-if="!Job.category[0].icon" class="jobimage" ng-src="img/defaultpost.png" alt="" class="img-1">    
+                                    </span>
+                              <!--   <span class="msg-count" ng-if="Job.offers.length>0 && myjobType==1">{{Job.offers.length}}</span> -->
+
+                                <span class="msg-count" ng-if="(Job.offers|filter:{is_read:false}).length>0 && myjobType==1">{{(Job.offers|filter:{is_read:false}).length}}</span>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-70 wd_100">
+                            <h2 class="review-name capitalize_title">{{Job.title}}
+                              <span class="accept" ng-if="Job.job_status==1 && !(Job.due_date |dateCompare)"> {{Job.budget | currency}}</span>
+                              <span class="accept" ng-if="Job.job_status==1 && (Job.due_date |dateCompare)"> {{Job.budget | currency}}</span>
+                              <span class="accept" ng-if="Job.job_status!=1"> {{Job.winner_offer[0].budget | currency}}</span>
+
+                            </h2>
+                            
+                            <div class="div-wrap">
+                                <div class="price-accept">
+                                    <div class="loaction post-date">
+                                        <img alt="" src="img/small-msg.png"><span>Due : {{Job.due_date | date}}    </span>
+                                    </div>
+                                    
+
+                                   <div class="loaction post-date my-jb-post">
+                                            <i class="locationicon icon ion-ios-location-outline"></i> <p>{{Job.address}}</p>
+                                   </div>
+                                </div>
+
+                                
+                                <div class="next">
+                                    <a href="#/app/viewjob/{{Job._id}}"><i class="icon ion-chevron-right"></i></a>
+                                    <div class="tags-display dis_tag">
+                                       
+                                    
+                                        <span ng-if="Job.job_status==1 && !(Job.due_date |dateCompare)" class="open">Open</span>
+                                        <span ng-if="Job.job_status==1 && (Job.due_date |dateCompare)" class="overdue">Overdue</span>
+                                        <span ng-if="Job.job_status==2 && typeJob == 'Working'" class="assigned">Accepted</span>
+                                        <span ng-if="Job.job_status==2 && typeJob == 'Posted'" class="assigned">Assigned</span> 
+                                        <span ng-if="Job.job_status==3 && typeJob == 'Posted'" class="completed">Completed</span>
+                                        <span ng-if="Job.job_status==3 && typeJob == 'Completed'" class="completed">Completed</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+          
+                    <div ng-if="Job.addtional_jobs.length==0 && typeJob=='Working'">
+                    <div class="tags-display dis_tag tag_link"  >
+                         <a ng-click="widgetExpanded = !widgetExpanded" class="head">  <i class="ion-plus" ng-if="widgetExpanded!=true"></i> <i class="ion-minus" ng-if="widgetExpanded==true"></i> Change Request</a>
+                     </div>
+                     <div class="row pos_rel1" >
+                       <div id="derp" ng-slide-down="widgetExpanded" lazy-render duration="1" class="slideable sliadble_1">
+                            <!-- <i class="ion-ios-close" ></i> -->
+                         <form name="myForm" novalidate  >
+                             <div class="list">
+                                  <label class="item item-input">
+                                      <input type="number" name="budget" ng-model="addtional.budget" ng-pattern="/^\d{0,4}(\.\d{1,2})?$/" placeholder="Price" required>
+                                      
+                                  </label>
+                                  <div ng-show="myForm.budget.submitted || myForm.budget.$touched">
+                                        <div class="add-error addionalr-post-job-error-budget" ng-show="myForm.budget.$error.required" >
+                                              Please enter budget.
+                                        </div>
+                                        <div class="add-error addional-post-job-error-budget" ng-show="myForm.budget.$error.pattern">This field can be at most 4 digits long.
+                                        </div>
+                                        <div class="add-error addional-post-job-error-budget" ng-show="addtional.budget<10">
+                                                Budget must be greater than or equal to 10.
+                                        </div>
+                                  </div>
+                                  
+                                  <label class="item item-input">
+                                      <input type="text" name="description" ng-model="addtional.description"  placeholder="Enter discription" required>
+                                  </label>
+                                  <div ng-show="myForm.description.submitted || myForm.description.$touched">
+                                        <div class="add-error addionalr-post-job-error-budget" ng-show="myForm.description.$error.required" >
+                                              Please enter description.
+                                        </div>
+                  
+                                  </div>
+                              </div>
+                              <div class="padding sub_drop_btn">
+                                  <button type="button" class="button post-button" ng-disabled="myForm.$invalid" ng-click="addtionalRequest(Job,addtional)">Submit</button>
+                              </div>
+                                 <div class="add_prs"></div>
+                          </form>
+                          
+                          
+                       </div>  
+
+                    </div>
+                    </div>
+
+                    <div ng-if="typeJob=='Posted' && Job.addtional_jobs[0].job_status==1 && Job.worker_payment[0].status!='paid'">  
+                     <div class="tags-display dis_tag tag_link">
+                         <a ng-click="widgetExpanded = !widgetExpanded" class="head" > <i class="ion-plus" ng-if="widgetExpanded!=true"></i> <i class="ion-minus" ng-if="widgetExpanded==true"></i> Change Request</a>
+                     </div>
+                    
+
+                     <div class="row pos_rel1 new_req">
+
+                       <div id="derp" ng-slide-down="widgetExpanded" lazy-render duration="1" class="slideable sliadble_1 sec_opt " >
+                            <!-- <i class="ion-ios-close"></i> -->
+                             <div class="list">
+                                  <label>Requested Job </label>
+                                  <p class="req_price">{{Job.addtional_jobs[0].budget | currency}}</p>
+                                  <p>{{Job.addtional_jobs[0].description}}</p>
+                             </div>
+                             <div class="padding sub_drop_btn">
+                                <button type="button" class="button post-button" ng-disabled="myForm.$invalid" ng-click="acceptOffer(Job._id,Job.addtional_jobs[0].budget)">Approve</button>
+                              </div>
+                                             
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="row pos_rel1" ng-if="Job.addtional_jobs.length==1">
+                      <div id="derp" ng-slide-down="widgetExpanded" lazy-render duration="1" class="slideable sliadble_1 slides_1">
+                          <div class="alert_msg">
+                               <span><i class="ion-checkmark-circled" ></i>Change request has been done!</span>
+                          </div>
+                      </div>
+                    </div>
+                    <ion-option-button ng-if="Job.job_status==1" class="button-positive"
+                              ng-click="editjob(Job._id)"
+                                       >
+                       Edit
+                    
+                    </ion-option-button>
+                    <ion-option-button ng-if="Job.job_status==1" class="button-assertive"
+                                       ng-click="deletejob(Job._id)">
+                      Delete
+                    </ion-option-button>   
+                  </ion-item>
+                  
+                  <ion-infinite-scroll on-infinite="addMoreData(
+                  {{totalRecord}})" ng-if="totalRecord > limitJob" >
+                        <ion-infinite-scroll-content
+                          loadingSpinner="bubbles"
+                          loadingText="Loading more data...">
+                        </ion-infinite-scroll-content>
+                  </ion-infinite-scroll>
+                  <span class="scroll-not-found" ng-if="totalRecord <= limitJob && (myJobs | filter:query | orderBy:propertyName:reverse | limitTo:numberOfItemsToDisplay).length>0">
+                      No more Jobs :)
+                  </span>
+                  
+            </ion-list>
+        </div>
+    </div>
+    <div class="row responsive-sm" ng-show="myJobs.length ==0 || query.length>0 && (myJobs | filter:query | orderBy:propertyName:reverse | limitTo:limitJob).length==0 " >
+            <div class="col">
+              <h1  class="nothing-found-block nothing-found-post">
+                <!-- <i class="icon ion-android-alert"></i> --> No jobs listed.
+              </h1>
+            </div>
+    </div>
+
+</ion-content>
+</ion-view>

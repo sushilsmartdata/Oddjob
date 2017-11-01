@@ -1,0 +1,10 @@
+{
+  "name": "oddjob",
+  "app_id": "c28db60d",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://cors.api.com/api"
+    }
+  ]
+}

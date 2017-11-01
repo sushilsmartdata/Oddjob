@@ -1,0 +1,159 @@
+<ion-view view-title="Bank Information">
+ 
+  <ion-content class="home-page has-tabs">
+    <div class="profile-wrap">
+
+        <div class="profile-banner job-wrap">
+               <img alt="Profile Banner" src="img/credit-card.jpg"  class="full-image"/>
+
+             
+        </div>
+    <div class="button-bar custom-tabs" >
+
+
+            <a  style="cursor:pointer" ng-click="credit_card()"
+                class="button button-stable" ng-class="{'active':creditCard}" ng-if="bankInfo.length==0 || bankInfo.length==undefined">Add </a>
+            <a  style="cursor:pointer" ng-click="credit_card()"
+                class="button button-stable" ng-class="{'active':creditCard}" ng-if="bankInfo.length>0">Update </a>
+            <a  style="cursor:pointer" ng-click="card_listing()"
+                class="button button-stable" ng-class="{'active':listCreditcard}" >Saved </a>
+    </div>
+      <div class="profile-wrap bankform" ng-show="creditCard">
+              <div class="form-wrap input">
+                <form name="bankForm" class="buyCreditForm" novalidate>
+                    <span class="input-label">Account holder Name</span>
+                    <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : bankForm.acc_holder.$invalid && !bankForm.acc_holder.$pristine }">
+                            
+                            <!-- ng-pattern="/^[a-zA-Z]*$ /" -->
+                            <input type="text" name="acc_holder"  ng-model="bank.account_holder_name" placeholder="Name..."  required>
+                    </label>
+                      <div ng-show="bankForm.acc_holder.$dirty && bankForm.acc_holder.$invalid">
+                                      <div class="form-error" ng-show="bankForm.acc_holder.$error.required" >
+                                            Please enter name.
+                                      </div>
+                                      <div class="form-error" ng-show="bankForm.acc_holder.$error.pattern">Please enter valid name.
+                                      </div>
+                                      <!-- <div class="form-error" ng-show="bankForm.acc_holder.$error.maxlength">
+                                            This field can be at most 20 characters long.
+                                      </div> -->
+                        </div>
+                          <span class="input-label">Account holder D.O.B <small class="minage">(min 10yrs)</small></span>
+
+                        <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : bankForm.bankForm.$invalid && !bankForm.dob.$pristine }">
+                           
+                            <!-- ng-pattern="/^[a-zA-Z]*$ /" -->
+                          <input type="date" name="dob" max="{{minDate | date:'yyyy-MM-dd'}}" 
+                                    ng-model="bank.dob">
+                        </label>
+                       
+
+
+
+                        <span class="input-label" ng-class="{ 'has-error' : bankForm.ac_type.$invalid  && !bankForm.ac_type.$pristine}"> 
+                            Account holder type
+                        </span>       
+                        <div class="row radio-wrap">
+                        <ion-radio name="ac_type" ng-model="bank.account_holder_type" ng-value="'individual'" required>  Individual
+                        </ion-radio>
+                        <ion-radio name="ac_type" ng-model="bank.account_holder_type" ng-value="'company'" required>
+                        Company
+                        </ion-radio>
+                        </div>
+                        <div class="form-error" ng-show="bankForm.ac_type.$invalid && !bankForm.ac_type.$pristine" >
+                               Please select Card Type
+                        </div>
+                        <span class="input-label">Routing number</span>
+                        <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : bankForm.routing.$invalid && !bankForm.routing.$pristine }">
+                            
+                            <input type="tel" name="routing" ng-model="bank.routing_number" placeholder="Routing Number..." ng- mask="9" repeat="9" required>
+                        </label>
+                        <div class="form-error" ng-show="bankForm.routing.$invalid && !bankForm.routing.$pristine" >Account  Number Should be 9 digits 
+                        </div>
+                        <span class="input-label">Account number</span>
+                          <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : bankForm.account.$invalid && !bankForm.account.$pristine }">
+                                
+                                <input type="tel" name="account" ng-model="bank.account_number" placeholder="Account Number..." ng- mask="9" repeat="12" required>
+                          </label>
+                          <div class="form-error" ng-show="bankForm.account.$invalid && !bankForm.account.$pristine" >Account  Number Should be 12 digits 
+                          </div>
+
+                          <span class="input-label">Address</span>
+                        <label class="item item-input item-stacked-label">
+                            <input type="text" ng-class="{'has-error':post_form.place.$invalid && !post_form.place.$pristine}" rows="4" placeholder="e.g. 37 Street Road, Downtown, New Jersey" name="place" ng-model="bank.place" ng-change="update(place)" g-places-autocomplete required class="customlocation"/>
+                           <span class="input-top"><i class="icon ion-location"></i></span>
+                      </label>
+                      <div id="placeautocomplete" class="paymentplaceautocomplete"></div>
+
+                      <div class="post-form-error post-job-error" ng-show="post_form.place.$invalid && !post_form.place.$pristine">
+                                   Enter a place.
+                      </div>
+
+                      <!-- <span class="input-label">Personal Id Number</span> -->
+                        <!-- <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : bankForm.personal_id_number.$invalid && !bankForm.personal_id_number.$pristine }">
+                            
+                            <input type="tel" name="personal_id_number" ng-model="bank.personal_id_number" placeholder="Personal Id Number" ng- mask="9" repeat="9" required>
+                        </label> -->
+                        <!-- <div class="form-error" ng-show="bankForm.personal_id_number.$invalid && !bankForm.personal_id_number.$pristine" >Account  Number Should be 9 digits 
+                        </div> -->
+
+                      <!-- <span class="input-label">SSN Last 4</span> -->
+                        <!-- <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : bankForm.ssn_last_4.$invalid && !bankForm.ssn_last_4.$pristine }">
+                            
+                            <input type="tel" name="ssn_last_4" ng-model="bank.ssn_last_4" placeholder="SSN LAST 4" maxlength="4" ng-mask="4" repeat="9" required>
+                        </label> -->
+                        <!-- <div class="form-error" ng-show="bankForm.ssn_last_4.$invalid && !bankForm.ssn_last_4.$pristine" >Account  Number Should be 4 digits 
+                        </div> -->
+
+                          
+                       
+
+                          <div class="post-job payment-form" >
+                            <button class="button post-button credit-btn mkeof" ng-disabled="bankForm.$invalid" ng-click="addBankInformation(bank)">
+                              Add Bank
+                            </button>
+                          </div>
+                </form>
+              </div>
+        </div>
+         <div class="list" ng-show="listCreditcard">
+        
+            <div> 
+            
+                <ion-list>
+
+                  <ion-item ng-repeat="bankInfo in bankInfo" ng-if="$first">
+      
+                               
+                
+                
+               <div class="card-wrap">
+                
+                  <span class="card-number acc" ><strong>Account Holder Name:</strong> {{bankInfo.account_holder_name}}</span></br>
+                  <span class="card-number acc"><strong>Account Holder Type:</strong> {{bankInfo.account_holder_type }}</strong></span></br>
+                  
+                  <span class="card-number acc"><strong>Routing Number:</strong> {{bankInfo.routing_number}}</span></br>
+                  <span class="card-number acc"><strong>Account Number:</strong> XXXXXXXX{{bankInfo.last4}}</span>
+                    
+                </div>
+                  
+              
+                   
+                  </ion-item>
+                        
+                </ion-list>
+  <div class="row responsive-sm">
+            <div class="col">
+              <h1 ng-show="bankInfo.length ==0 || bankInfo.length ==undefined" class="nothing-found-block nothing-found-post">
+                <!-- <i class="icon ion-android-alert"></i> -->  Didn't save any bank detail yet.
+              </h1>
+            </div>
+    </div>
+           
+            </div>
+            
+        </div>
+
+    </div>
+  </ion-content>  
+
+</ion-view>

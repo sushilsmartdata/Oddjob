@@ -1,0 +1,61 @@
+<ion-view view-title="Make Offer" ng-init="findJobdetail()">
+<ion-content class="home-page has-tabs make-offer">
+  <div class="profile-wrap full-height">
+        <div class="profile-banner job-wrap">
+            <img ng-if="job.category[0].cover_image" alt="Job Icon" src="{{skillCoverImagePath}}{{job.category[0].cover_image}}" class="full-image"/>
+            <img ng-if="!job.category[0].cover_image" alt="Job Icon" src="img/default_cover.jpg" class="full-image"/>
+            <div class="job-banner">
+              
+                    <h4>{{job.title}}</h4>
+                            </div>
+        </div>
+       
+        <form name="offer_form" id="post"  class="full-height">
+        <div class="row form-wrap">
+            <div class="col">
+                <div class="list offer_list">
+                  <span class="input-label offer-amt spn_label" >Offer Amount</span> 
+                 
+                  <label class="item item-input item-stacked-label file-input offer_label" 
+                  ng-class="{'has-error':(offer_form.budget.$submitted || offer_form.budget.$touched && offer_form.budget.$error.required ) || (offer_form.budget.$submitted || offer_form.budget.$touched && offer_form.budget.$error.pattern  ) || (offer_form.budget.$submitted || offer_form.budget.$touched && offer_form.budget.$error.maxlength)}" >
+                    <!-- <span class="input-top job-zip job-zip-curre"><img  src="img/dollor-icon.png" alt=""/></span> -->
+                    <span class="input-top job-zip dol_dv_span" style="padding-left:5px"><i class="ion-social-usd"></i></span>
+                    <input class="budget-input input-bug bug-cus" type="number" ng-model="offer.budget" name="budget" placeholder="Offer Amount" ng-pattern="/^\d{0,4}(\.\d{1,2})?$/"  step="0.01" required>
+                      
+                  </label>
+                 <!--  <div class="post-form-error post-job-error-budget" 
+                  ng-class="{'ng-valid-pattern': job.budget <= offer.budget}"  ng-show="job.budget <= offer.budget">Offer Should be less or equal to budget.</div> -->
+                  
+                  <div ng-show="offer_form.budget.submitted || offer_form.budget.$touched">
+                            <div class="form-error post-job-error-budget" ng-show="offer_form.budget.$error.required" >
+                                  Please enter offer amount.
+                            </div>
+                            <div class="form-error post-job-error-budget" ng-show="offer_form.budget.$error.pattern">This field can be at most 4 digits long.
+                            </div>
+                           
+                  </div>
+                  <label class="item item-input item-stacked-label">
+                    <span class="input-label">Description</span>
+                    <textarea type="text" placeholder="" ng-model="offer.comment"></textarea>
+                  </label>
+                  
+                  
+                 </div>
+                 
+                <div class="post-job">
+                     <!-- <button class="button post-button" ng-disabled="offer_form.$invalid || job.budget <= offer.budget">Make Offer</button> -->
+                     <button class="button post-button mkeof" ng-if="!offerId" ng-click="creatOffer(offer)" ng-disabled="offer_form.$invalid">Make Offer</button>
+                     <button class="button post-button mkeof" ng-if="offerId" ng-click="updateOffer(offer)" ng-disabled="offer_form.$invalid">Update Offer</button>
+                </div>  
+            </div>
+        </div>
+        </form>
+        <div class="row">
+          <div class="col">
+              
+            </div>
+        </div>
+    </div>
+  </ion-content>
+  
+</ion-view>

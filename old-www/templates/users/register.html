@@ -1,0 +1,105 @@
+<ion-view view-title="Register">
+ <ion-header class="bar bar-header login-header">
+  <h1 class="title register-title">Register</h1>
+  <a ui-sref="signin">
+  <i class="back ion-ios-arrow-back"></i>
+  </a>
+</ion-header> 
+  <ion-content class="home">
+    <div class="login-form">
+      <div class="row">
+          <div class="col-80 col-offset-10">
+            <form name="register_form" id="register_form" class="list" ng-submit="register(user)">
+              <div class="row">
+                    <div class="col">
+                        <div class="title"> <img alt="Company Logo" height="156" src="img/logo.png"></div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                        <div class="list">
+                            <label  class="item item-input" ng-class="{'has-error':(register_form.email.$submitted || register_form.email.$touched && register_form.email.$error.required && register_form.email.$viewValue.length >0) || (register_form.email.$submitted || register_form.email.$touched && register_form.email.$error.pattern && register_form.email.$viewValue.length >0) }" >
+                                <input type="email" ng-model="user.email"  ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"  name="email" placeholder="Email..." required>
+                            </label>
+                         
+                            <div ng-show="register_form.email.$submitted || register_form.email.$touched && register_form.email.$viewValue.length > 0 ">
+                                <div class="form-error" ng-show="register_form.email.$error.required" >
+                                   Please enter email.
+                                 </div>
+                              <div class="form-error" ng-show="register_form.email.$error.pattern" >
+                                Please enter valid email.
+                              </div>
+                            </div>
+                            <label class="item item-input  form-field" ng-class="{'has-error':(register_form.password.$submitted || register_form.password.$touched && register_form.password.$error.required && register_form.password.$viewValue.length > 0 ) || (register_form.password.$submitted || register_form.password.$touched && register_form.password.$error.pattern && register_form.password.$viewValue.length > 0) || (register_form.password.$submitted || register_form.password.$touched && register_form.password.$error.maxlength && register_form.password.$viewValue.length > 0)  || (register_form.password.$submitted || register_form.password.$touched && register_form.password.$error.minlength && register_form.password.$viewValue.length > 0)  }" >
+                                    <input type="password" required ng-model="user.password" ng-blur="validate=true" name="password" id="password" 
+                                    ng-pattern="/^([a-zA-Z0-9@$#]*)$/" placeholder="Password..." ng-minlength="5" ng-maxlength="10">
+                            </label>
+                            <div ng-show="register_form.password.submitted || register_form.password.$touched && register_form.password.$viewValue.length > 0"> 
+                              <div class="form-error" ng-show="register_form.password.$error.required" >
+                                  Please enter password.
+                              </div>
+                              <div class="form-error" ng-show="register_form.password.$error.pattern" >
+                                Please do not use space in password.
+                              </div>
+                              <div class="form-error" ng-show="register_form.password.$error.maxlength" >
+                                Please enter a password between 5 and 10 characters.
+                              </div>
+                              <div class="form-error" ng-show="register_form.password.$error.minlength" >
+                                Please enter a password between 5 and 10 characters.
+                              </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button ng-disabled="register_form.$invalid" class="button waves-effect waves-blue button-block login-btn">
+                         Register
+                        </button>
+                    </div>
+                </div>
+            </form>
+                <div class="row">
+                    <div class="col">
+                        <p class="or-option">OR</p>
+                    </div>
+                </div>
+
+          </div>
+          
+        </div>
+        <div class="row">
+          <div class="col">
+              <ul class="icon-list">
+                  <ul class="icon-list">
+                  <li>
+                      <a ng-click="facebookLogin()">
+                          <img alt="Social-icons" src="img/facebook.png">
+                        </a>
+                    </li>
+                    <li>
+                      <a  ng-click="twitterLogin()">
+                          <img alt="Social-icons" src="img/twitter.png">
+                        </a>
+                    </li>
+                    <li>
+                      <a ng-click="googleLogin()">
+                          <img alt="Social-icons" src="img/g-plus.png">
+                        </a>
+                    </li>
+                    <li>
+                      <a ng-click="linkedinLogin()">
+                          <img alt="Social-icons" src="img/link.png">
+                        </a>
+                    </li>
+                </ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="login-footer"><p>© {{ today | date :  "y" }} OddJob. All Rights Reserved.</p></div>
+  </ion-content>
+ <!--  <ion-footer class="bar bar-footer login-footer">
+       <p>© 2016 OddJob. All Rights Reserved.</p>
+  </ion-footer> -->
+</ion-view>

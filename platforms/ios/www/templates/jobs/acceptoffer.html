@@ -1,0 +1,136 @@
+<ion-view view-title="Accept Offer">
+  <ion-content class="home-page has-tabs">
+    <div class="profile-wrap">
+        <div class="profile-banner job-wrap">
+            
+             <img ng-if="JobDetail.category[0].cover_image" alt="Job Icon" src="{{skillCoverImagePath}}{{JobDetail.category[0].cover_image}}" class="full-image"/>
+            <img ng-if="!JobDetail.category[0].cover_image" alt="Job Icon" src="img/default_cover.jpg" class="full-image"/>
+            <!-- <img ng-if="job.skill[0].cover_image" alt="Job Icon" src="{{skillCoverImagePath}}{{job.skill[0].cover_image}}" class="full-image"/>
+            <img ng-if="!job.skill[0].cover_image" alt="Job Icon" src="img/default_cover.jpg" class="full-image"/> -->
+            <div class="job-banner">
+                <h4>{{JobDetail.title}}</h4>
+            </div>
+        </div>
+       
+        <div class="posted-by">
+        	<div class="left-sec">
+            	<div class="row">
+                	<div class="col-30">
+                    	<div class="item img-wrap circle-img">
+                        	<img class="viewimage" ng-if="JobDetail.creator[0].prof_image" ng-src="{{profileImagePath}}{{JobDetail.creator[0].prof_image}}">
+                              <img class="viewimage" ng-if="!JobDetail.creator[0].prof_image" ng-src="/img/user_default.jpg">
+
+               			 </div>
+                    </div>
+                    <div class="col-70">
+                    	<h6>Posted by</h6>
+                       
+                        <h3> {{JobDetail.creator[0].first_name | capitalize }} {{JobDetail.creator[0].last_name | capitalize }}</h3>
+                        <div class="loaction">
+                        	<i class="ion-ios-location-outline"></i><span>{{JobDetail.address}}</span>
+                        </div>
+                        <div class="loaction">
+                        	<span>{{offerDetail.budget | currency}} budget</span>
+                        </div>
+                    </div>
+                </div>
+            	
+            </div>
+            <div class="right-sec">
+            	<div class="loaction post-date">
+                	<img src="img/small-msg.png" alt=""/><span>Due : {{JobDetail.due_date | date}}</span>
+                </div>
+                <div class="loaction post-privacy">
+                	<i class="ion-ios-people"></i><span>{{JobDetail.created_date | date}}</span>
+                </div>
+                <div class="loaction offers-comment">
+                	<img src="img/small-msg.png" alt=""/><span>{{JobDetail.offers.length}} Offers</span><span> | </span><span>{{offerDetail.comments.length}} Comments</span>
+                </div>
+            </div>
+        </div>
+        <div class="row job-desc">
+        	<div class="col col-70">
+            	<p>{{JobDetail.description}}</p>
+            </div>
+
+            <div class="col col-20">
+                <div class="image-icon" >
+               <i ng-if="offerDetail.jobid[0].image" ng-click="showImage()" class="icon ion-search"></i>
+                <img ng-if="offerDetail.jobid[0].image" src="{{jobImagePath}}{{offerDetail.jobid[0].image}}" alt=""  class="no-img"/>
+                <img ng-if="!offerDetail.jobid[0].image"  ng-src="img/noimage2.png" alt="" class="no-img" >
+            </div>	
+                 
+            </div>
+        </div>
+
+        
+
+        <div class="your-Reviews offers accept-offer">	
+       		<h4 class="title-wrap">Accept Offer</span></h4>
+            <ul class="offer-wrap">
+            	<li>
+                    <div class="row">
+                        <div class="col">
+                           
+                            <div class="item item-avatar">
+                              <img ng-if="!offerDetail.userid[0].prof_image" src="img/user_default.jpg">
+                              <img ng-if="offerDetail.userid[0].prof_image" ng-src="{{profileImagePath}}{{offerDetail.userid[0].prof_image}}" err-src="img/user_default.jpg">
+                              
+
+                            </div>
+                           
+                            <h2 class="review-name">{{offerDetail.userid[0].first_name | capitalize }} {{offerDetail.userid[0].last_name | capitalize }}</h2>
+
+                            <span  class="price">{{offerDetail.budget | currency}}</span>
+
+                            <button ng-if="offerDetail.jobid[0].winner_offer[0]==offerDetail._id && offerDetail.jobid[0].work_status==4 && offerDetail.jobid[0].rating.length==0"  class="accept" ng-click="rate()">
+                                Review
+                            </button>
+
+                            <!-- <button  ng-if="offerDetail.jobid[0].winner_offer[0]==offerDetail._id"  class="accept" ng-click="rate()">
+                                Review
+                            </button> -->
+                            <p>By clicking ACCEPT below, you are agreeing to the OddJob terms and conditions. Your card will be charged but the worker will not be paid until the job is completed. </p>
+                            <form>
+
+                            <button  ng-if="offerDetail.jobid[0].job_status==1 && offerDetail.jobid[0].creator[0]== userInformation._id" class="accept" ng-click="acceptOffer(offerDetail._id,offerDetail.budget)">
+                              Accept 
+                            </button>
+                            </form>
+
+                           
+                            <button  ng-if="offerDetail.jobid[0].winner_offer[0]==offerDetail._id" ng-disabled="offerDetail.jobid[0].winner_offer[0]==offerDetail._id" class="accept accepted">
+                                Accepted
+                            </button>
+                        </div>
+                        </div>
+                    
+               </li>
+          	</ul>
+        </div>
+    </div>
+    <script id="image-modal.html" type="text/ng-template">
+              <div class="modal image-modal transparent" ng-click="closeModal()">
+              <ion-scroll zooming="true"
+            direction="xy" 
+            delegate-handle="zoom-pane" 
+            class="zoom-pane" 
+            min-zoom="1" 
+                    scrollbar-x="false" 
+                scrollbar-y="false" 
+            overflow-scroll="false" 
+           > 
+           <div class="modal-image">
+            
+                  <img ng-if="offerDetail.jobid[0].image" src="{{jobOriginalImagePath}}{{offerDetail.jobid[0].image}}" alt="" />
+                     <img ng-if="!offerDetail.jobid[0].image" ng-src="{{imageSrc}}" />
+            </div>      
+
+                  </ion-pane>
+             </ion-scroll>
+
+    </script>
+  </ion-content>
+
+  
+</ion-view>

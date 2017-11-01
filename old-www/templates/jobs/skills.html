@@ -1,0 +1,85 @@
+<ion-view view-title="Post a Job">
+  <ion-content class="home-page userskill has-tabs msgManagement">
+    <div class="post-job">
+       <div class="col-12">
+
+          <div class="row" ng-repeat="skillData in skills track by $index" ng-if="skillData.featured==true" ng-show="skillViewStatus">   
+
+             <div class="job-box" ng-click=skillDetail(skillData._id,skillData.skill,skillData.subSkills)>
+                 <ion-spinner id="{{skillData._id}}" icon="ios"></ion-spinner>
+                  <div class="back-img" style="background:url({{skillImagePath}}{{skillData.image}})">
+                      <div class="overlay-img">
+                          <img style="display:none" ng-if="skillData.image" src="{{skillImagePath}}{{skillData.image}}" class="full-image" type="{{skillData._id}}" imageonload/>
+                          <img  style="display:none" ng-if="!skillData.image" src="img/noimage2.png"  class="full-image skill-image" type="{{skillData._id}}" imageonload/>
+                           <div type="{{skillData._id}}" class="job-title" imageonload>
+                          <h5 class="capitalize_title">{{skillData.skill}}</h5>
+
+                  </div>
+                      </div>
+                  </div>
+                 
+              </div>            
+          </div> 
+        </div>
+        </div>
+
+  </ion-content>
+   
+   <div class="box-footer skill-s">
+
+
+       <div class="searchbar_btm {{skillViewStatus === true ? 'skillsearch' : 'listingSearch'}}" >
+            <span  ng-class="skillViewStatus==true ? '' : 'skillSear' ">Can't Find What you are Looking For?
+
+            </span>
+                    <div class="search-bar" ng-class="skillViewStatus==true ? '' : 'lsearch' ">
+                      <div class="list">
+                        <div class="s-arrow" ng-show="!skillViewStatus">
+                         <i class="icon ion-chevron-left" ng-click="backSkill()"></i>
+
+                         </div>
+                        <label class="item item-input {{skillViewStatus === true ? '' : 's-label'}}" ng-init="blur='true'">
+                         
+                          <!-- <input type="text"  ng-model="query" ng-focus="addDynamicheight()" id="searchbar" ng-keyup="getCategoryList()"> -->
+                          <input type="text"  ng-model="skillquery" id="searchbar" ng-keyup="getCategoryList()">
+                          <span  class="input-top"><i class="icon ion-ios-search"></i><span ng-hide="skillquery.length>0">Search for a job category</span></span>
+                        </label>
+                        <i ng-show="!skillViewStatus" class="icon ion-ios-close-empty close-b" ng-click="skillquery=''" ></i>
+                        
+                      </div>
+                  </div>
+
+        <div class="skill_container" id="skill_container" ng-show="!skillViewStatus"> 
+
+        <div class="top_content" ng-show="!skillViewStatus" ng-repeat="skillData in skills  | filter:skillquery"  ng-if="skillData.featured==false" ng-click=skillDetail(skillData._id,skillData.skill,skillData.subSkills)>
+            <div class="img_dv" >
+
+                <span><img class="ufeatured"  src="{{skillImagePath}}{{skillData.image}}" height="30px" width="30px"></span>
+
+            </div>
+
+            <div class="con_dv" > 
+              <span> {{skillData.skill | capitalize}}</span>
+
+
+            </div>
+
+        </div>
+        <div  ng-show="(skills | filter:skillquery).length==0">
+              <div class="col">
+                <h1 class="nothing-found-block nothing-found-post">
+                    No skills found.
+                </h1>
+              </div>
+      </div>
+        </div>
+        
+                
+          </div>
+              
+     
+          </div>
+
+
+</ion-view>
+

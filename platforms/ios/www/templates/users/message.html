@@ -1,0 +1,171 @@
+
+<ion-view view-title="Messages">
+
+  <ion-content class="home-page has-tabs">
+
+    <div class="profile-wrap">
+        
+        <div class="search-bar">
+            <div class="list">
+              <label class="item item-input" ng-init="blur='true'">
+                <input type="text"  ng-model="query"  id="searchbar">
+                <span ng-hide="query.length>0" class="input-top"><i style="left:40px" class="icon ion-ios-search"></i>Search messages...</span>
+              </label>
+            </div>
+        </div>
+
+
+         <div class="button-bar custom-tab">
+        
+             <a  style="cursor:pointer" ng-click="messageList()"
+            class="button button-stable" ng-class="{'active':msgList}">Messages</a> 
+            <a  style="cursor:pointer" ng-click="contactList()"
+            class="button button-stable" ng-class="{'active':cntList}">Contact</a>
+         </div>
+
+        
+        <div class="your-Reviews findjobs" ng-show="msgList"> 
+              
+            <ul class="offer-wrap find-wrap msg-wrap">
+
+              <li ng-repeat="messageList in messageLists | filter:query" ng-if="messageList.senderid._id==userInformation._id && messageLists.length>0">
+
+                 
+                    <div class="row cursor" ng-click="msgthred(messageList.recieverid._id,messageList._id)">
+                        <div class="col-25">
+                            <div class="job-wrap">
+                              <div class="img-wrap msg-img item-avatar">
+                                 
+                                  <img class="jobimage" 
+                                  src="{{profileImagePath}}{{messageList.recieverid.prof_image}}" err-src="img/user_default.jpg" alt="">
+
+                                  <span class="msg-count" ng-if="(messageList.message|filter:{is_read:false,recieverid:userInformation._id}).length>0">{{(messageList.message|filter:{is_read:false,recieverid:userInformation._id}).length}}</span>
+                                  
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-75 user_online" style="position:relative;">
+                            <h2 class="review-name msg-sender" style="position:absolute;top:10px;font-weight:bold">
+                             
+                            {{messageList.recieverid.first_name | capitalize}} {{messageList.recieverid.last_name | capitalize}} {{messageList.userStatus}}
+                            </h2>
+                            <img  ng-if="userStatus=='online'" src="img/online.png">
+                            <span ng-if="(messageList.created_date | date) === (currentDate | date)" class="msg-day day_rht_msg">Today</span>
+                            <span ng-if="(messageList.created_date | date) === (previousDay | date)" class="msg-day day_rht_msg">Yesterday</span>
+                            <span ng-if="(messageList.created_date | date) != (previousDay | date) && (messageList.created_date | date) != (currentDate | date)" class="msg-day day_rht_msg">{{messageList.created_date | date  }}</span>
+                            <div class="div-wrap message-content message-content-top">
+                              <div class="price-accept">
+                                    <p>{{messageList.message[0].text | cut:true:50:' ...'}}</p>
+                                    
+                               </div>
+                                <div class="next" ng-click="msgthred(messageList._id)">
+                                  <a href="javascript:void(0)"><i class="icon ion-chevron-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+               </li>
+
+               <li ng-repeat="messageList in messageLists | limitTo: -1" ng-if="messageList.recieverid._id==userInformation._id">
+
+                    <div class="row" ng-click="msgthred(messageList.senderid._id,messageList._id)">
+                        <div class="col-25">
+                            <div class="job-wrap">
+                              <div class="img-wrap msg-img item-avatar">
+                           
+                                  <!-- <img ng-if="!messageList.senderid.prof_image" err-src="img/user_default.jpg" alt="" class="jobimage"> -->
+                                  <img class="jobimage" src="{{profileImagePath}}{{messageList.senderid.prof_image}}" err-src="img/user_default.jpg" alt="">
+                                 
+                                  <span class="msg-count" ng-if="(messageList.message|filter:{is_read:false,recieverid:userInformation._id}).length>0">{{(messageList.message|filter:{is_read:false,recieverid:userInformation._id}).length}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-75 user_online">
+                            <h2 class="review-name msg-sender">{{messageList.senderid.first_name | capitalize }} {{messageList.senderid.last_name | capitalize }} {{messageList.userStatus}}
+                               
+
+                            <span ng-if="(messageList.created_date | date) === (currentDate | date)" class="msg-day day_rht_msg">Today</span>
+                            <span ng-if="(messageList.created_date | date) === (previousDay | date)" class="msg-day day_rht_msg">Yesterday</span>
+                            <span ng-if="(messageList.created_date | date) != (previousDay | date) && (messageList.created_date | date) != (currentDate | date)" class="msg-day day_rht_msg">{{messageList.created_date | date  }}</span>
+
+                            <div class="div-wrap message-content message-content-top">
+                              <div class="price-accept">
+                                    <p>{{messageList.message[messageList.message.length-1].text | cut:true:50:' ...'}}</p>
+                               </div>
+                                <div class="next">
+                                  <a href="javascript:void(0)"><i class="icon ion-chevron-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+               </li>
+               
+               
+               
+              </ul>
+          <div class="row responsive-sm account-status" ng-show="messageLists.length==0" >
+                <div class="col">
+                  <h1 class="nothing-found-block nothing-found-post">
+                    No messages yet. Messages will appear here once you have an active job.
+                  </h1>
+              
+                </div>
+          </div> 
+         </div> 
+
+    <div class="your-Reviews findjobs" ng-show="cntList"> 
+    
+            <ul class="offer-wrap find-wrap msg-wrap cntlist">
+          
+              <li ng-repeat="contactList in contactLists | unique:'email'" ng-click="msgform(contactList._id)">
+             
+
+                
+                    <div class="row" ng-if="contactList._id!=''">
+                        <div class="col-20">
+                            <div class="job-wrap">
+                              <div class="img-wrap  contact-img item-avatar msg-img">
+<!-- 
+                                 <img ng-if="!contactList.prof_image[0]" class="jobimage" err-src="img/user_default.jpg" alt="" /> -->
+                                  
+                                  <img src="{{profileImagePath}}{{contactList.prof_image[0]}}" alt="" err-src="img/user_default.jpg" class="jobimage">
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-80 user_online" style="position:relative">
+                            <h2 class="review-name msg-sender" style="position:absolute;top:30px;font-weight:bold">{{contactList.first_name[0] | capitalize }} {{contactList.last_name[0] | capitalize }} </h2>
+                            <img ng-if="contactList.userStatus=='online'" src="img/online.png">
+                            <h2 class="review-name msg-sender" style="position:absolute;top:30px;">
+                             <img  ng-if="userStatus=='online'" src="img/online.png">
+                            </h2>
+                            <div class="div-wrap message-content message-content-top" style="position:absolute;top:15px;right:3px">
+                             
+                                <div class="next">
+                                  <a href="javascript:void(0)"><i class="icon ion-chevron-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               </li>
+               
+              </ul>
+          <div class="row responsive-sm account-status" ng-if="contactLists.length==0" >
+              <div class="col">
+                <h1 class="nothing-found-block nothing-found-post">
+                  <!-- <i class="icon ion-android-alert"></i> --> No saved contacts from OddJob yet. 
+                </h1>
+              </div>
+          </div>
+
+
+    </div>
+  </div> 
+  </ion-content>
+  
+</ion-view>

@@ -1,0 +1,123 @@
+<ion-view view-title="My Transactions" ng-init="paymentList()">
+  <ion-content class="home-page has-tabs">
+      <div class="profile-wrap" >
+          <div class="search-bar">
+            <div class="list">
+              <label class="item item-input" ng-init="blur='true'">
+                <input type="text"  ng-model="query"  id="searchbar">
+                <span ng-hide="query.length>0" class="input-top"><i class="icon ion-ios-search"></i>Search</span>
+              </label>
+            </div>
+        </div>
+
+        <div class="your-Reviews offers">
+       
+             <h4 class="title-wrap myjob-title">Paid : {{paidTotalAmount==undefined ? 0 :paidTotalAmount | currency}}<a href="#/app/transactionlist/{{userInformation._id}}/paid/4"><span class="add-offer" ng-if="paidList.length >2">View all</span></a></h4>
+        </div>
+         
+        <div class="your-Reviews findjobs myjob transaction"> 
+            <ion-list class="offer-wrap find-wrap">
+                 <ion-item ng-repeat="paidList in paidList | filter:query | orderBy:propertyName:reverse | limitTo:limitJob" class="no-padding" ng-click="detailJob('paid',paidList._id)">
+           
+                   <div class="row">
+                          <div class="col-20">
+                              <div class="job-wrap">
+                                  <div class="img-wrap item-avatar">
+                                   <img class="jobimage img-1" ng-src="img/debit.png" alt="" />
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-80">
+                              <div class="title-box">
+                                <h2 class="review-name">{{paidList.title}}</h2>
+                                  <span class="accept"> {{paidList.admin_payment[0].transaction_amount | currency}}</span>
+                              </div>
+                              <!--<h2 class="review-name">{{Job.title}}<span class="accept"> {{Job.budget | currency}}</span></h2>-->
+                           
+                              <div class="div-wrap">
+                                  <div class="price-accept">
+                                      <div class="loaction post-date">
+                                          <img alt="" src="img/small-msg.png"><span>Date :{{paidList.admin_payment[0].txn_date|date}} </span>
+                                      </div>
+                                      <div class="loaction post-date">
+                                          <img alt="" src="img/globe.png"><span>{{paidList.jobtype[0].name|date}}</span>
+                                      </div>
+
+                                      
+                                  </div>
+                                  <div class="next">
+                                      <a href="#/app/transactionview/paid/{{paidList._id}}"><i class="icon ion-chevron-right"></i></a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                     
+                  </ion-item>
+                 <div class="row responsive-sm">
+                  <div class="col">
+                    <h1 ng-show="paidList.length ==0" class="nothing-found-myjob-block">
+                      <!-- <i class="icon ion-android-alert"></i> --> You have not made any OddJob transactions yet.
+                    </h1>
+                  </div>
+                 
+            </ion-list>
+        </div>
+        
+         <div class="your-Reviews offers transaction">
+             <h4 class="title-wrap myjob-title">Recieved:<span ng-if="recievedList[0].worker_payment.length>0">:</span> {{recievedprice==undefined ? 0:recievedprice  | currency}} <a href="#/app/transactionlist/{{userInformation._id}}/recieved/4"><span class="add-offer" ng-if="recievedList[0].worker_payment.length >2">View all</span></a></h4>
+        </div>
+        
+         <div class="your-Reviews findjobs myjob" ng-if="recievedList[0].worker_payment.length>0"> 
+            <ion-list class="offer-wrap find-wrap">
+                 <ion-item ng-repeat="paidList in recievedList | filter:query | orderBy:propertyName:reverse | limitTo:limitJob" class="no-padding" ng-click="detailJob('recieved',paidList._id)">
+           
+                   <div class="row">
+                          <div class="col-20">
+                              <div class="job-wrap">
+                                  <div class="img-wrap item-avatar">
+                                   <img class="jobimage img-1" ng-src="img/deposit1.png" alt="" />
+                                  </div>
+                              </div>
+                          </div>
+                         
+                          <div class="col-80">
+                              <div class="title-box">
+                                <h2 class="review-name">{{paidList.title}}</h2>
+                                  <span class="accept"> {{paidList.worker_payment[0].transaction_amount-(paidList.worker_payment[0].transaction_amount * paidList.admin_commission.job_finder /100) | currency}}</span>
+                              </div>
+                              <!--<h2 class="review-name">{{Job.title}}<span class="accept"> {{Job.budget | currency}}</span></h2>-->
+                           
+                              <div class="div-wrap">
+                                  <div class="price-accept">
+                                      <div class="loaction post-date">
+                                          <img alt="" src="img/small-msg.png"><span>Date :{{paidList.worker_payment[0].txn_date|date}} </span>
+                                      </div>
+                                      <div class="loaction post-date">
+                                          <img alt="" src="img/globe.png"><span>{{paidList.jobtype[0].name|date}}</span>
+                                      </div>
+
+                                      
+                                  </div>
+                                  <div class="next">
+                                      <a href="#/app/transactionview/recieved/{{paidList._id}}"><i class="icon ion-chevron-right"></i></a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                     
+                  </ion-item>
+                 
+                
+            </ion-list>
+          </div>
+        </div>
+      </div>
+ <div class="row responsive-sm">
+                  <div class="col">
+                    <h1 ng-show="recievedList.length ==0" class="nothing-found-myjob-block">
+                      <!-- <i class="icon ion-android-alert"></i> --> You have not made any OddJob transactions yet.
+                    </h1>
+</div>
+      
+  </ion-content>
+</ion-view>

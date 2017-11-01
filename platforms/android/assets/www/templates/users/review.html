@@ -1,0 +1,55 @@
+<ion-view view-title="Reviews">
+<ion-content class="home-page userskill has-tabs">
+
+    <div class="profile-wrap">
+        <div class="your-Reviews">  
+        <ion-list>
+        <ion-item ng-repeat="review in reviewList |orderObjectBy:date:true" class="review-item-list">
+           
+
+            <div class="row">
+                <div class="col-20" >
+                <div class="job-wrap">
+                  
+                    <div class="item item-avatar left_cir_img">
+                      <!-- <img class="cursor" ng-click="userInfoData(review.job_author_id_id)" ng-if="!review.job_author_id.prof_image" err-src="img/review.png"> -->
+                      <img class="cursor" ng-click="userInfoData(review.job_author_id._id)" src="{{profileImagePath}}{{review.job_author_id.prof_image}}" err-src="img/user_default.jpg">
+                    </div>
+                 </div>
+                </div>
+                
+                <div class="col-80 rew">
+                <div class="title-box">
+                     
+                    <h2 class="review-name cursor review-title rtit" ng-click="userInfoData(review.job_author_id._id)">{{review.job_author_id.first_name | capitalize }} {{review.job_author_id.last_name | capitalize }}</h2>
+                     </div>
+                    
+                    <ul class="icon-list user-rating u-rat" >
+                         <li ng-repeat="i in getNumber(review.value) track by $index">
+                        <i class="icon ion-ios-star"></i>
+                        
+                    </li>
+                        
+                        <li ng-repeat="i in getNumber(review.max-review.value) track by $index">
+                            <i class="icon ion-ios-star-outline"></i>
+                        </li>
+                    </ul>
+                    <div class="div-wrap u-wrap">
+                   <p><span>{{review.created_date | date}}</span><span class="review_span">{{review.review}}</span></p>
+                   </div>
+                </div>
+            </div>
+            </ion-item>
+            </ion-list>
+        </div>
+    </div>
+    <div class="row responsive-sm">
+            <div class="col">
+              <h1 ng-show="reviewList.length ==0" class="nothing-found-block nothing-found-post">
+                <!-- <i class="icon ion-android-alert"></i> -->  No Reviews yet.
+              </h1>
+            </div>
+     </div>
+  </ion-content>
+  
+</ion-view>

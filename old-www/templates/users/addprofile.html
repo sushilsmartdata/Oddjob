@@ -1,0 +1,340 @@
+<ion-view view-title="{{profileTitle}}" >
+
+
+
+<ion-content class="home has-tabs" id="addProfile" ng-show="!uSkill">
+
+  <div class="login-form">
+    <div class="row">
+      <div class="col-80 col-offset-10">
+        <form name="profile_form" id="profile" class="list" ng-submit="addprofile(profile)">
+            <div class="row">
+              <div class="col">
+                <div class="title"> 
+                  <img alt="Company Logo" height="156" src="img/logo.png">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="list">
+
+                  
+                         <label  class="item item-input" ng-class="{'has-error':(profile_form.username.$submitted || profile_form.username.$touched && profile_form.username.$error.required ) || (profile_form.username.$submitted || profile_form.username.$touched && profile_form.username.$error.pattern) || (profile_form.username.$submitted || profile_form.username.$touched && profile_form.username.$error.maxlength)}">
+                           <input type="text" ng-pattern="/^[a-zA-Z0-9]*$/" ng-model="profile.user_name"  name="username" placeholder="Username" ng-minlength="4" maxlength="15" required >
+                          </label>
+                                    
+                          <div ng-show="profile_form.username.submitted || profile_form.username.$touched">
+                            <div class="form-error" ng-show="profile_form.username.$error.required" >
+                                  Please enter username.
+                            </div>
+                            <div class="form-error" ng-show="profile_form.username.$error.pattern">Please enter valid username.
+                            </div>
+                            <div class="form-error" ng-show="profile_form.username.$error.minlength">
+                                  Please enter a username minimum 4 characters.
+                            </div>
+                            <!-- <div class="form-error" ng-show="profile_form.username.$error.maxlength">
+                                  Please enter a username between 4 and 15 characters.
+                            </div> -->
+                            
+                          </div>
+
+                          <label class="item item-input">
+                            <input class="custom-email" type="text"   value="{{userData.data.email}}" disabled>
+                          </label>
+                        
+
+                          <label  class="item item-input" ng-class="{'has-error':(profile_form.firstname.$submitted || profile_form.firstname.$touched && profile_form.firstname.$error.required) || (profile_form.firstname.$submitted || profile_form.firstname.$touched && profile_form.firstname.$error.pattern) || (profile_form.firstname.$submitted || profile_form.firstname.$touched && profile_form.firstname.$error.maxlength)}">
+                            <!-- <input type="text" ng-pattern="/^[a-zA-Z]*$/" ng-model="profile.first_name"  name="firstname" placeholder="First name" required   ng-maxlength="15"> -->
+                            <input type="text" ng-pattern="/^[-'a-z\u4e00-\u9eff]{1,20}$/i" ng-model="profile.first_name"  name="firstname" placeholder="First name" required   ng-maxlength="15">
+                          </label>
+                          <div ng-show="profile_form.firstname.submitted ||  profile_form.firstname.$touched">
+                            <div class="form-error" ng-show="profile_form.firstname.$error.required" >
+                                  Please enter firstname.
+                            </div>
+                            <div class="form-error" ng-show="profile_form.firstname.$error.pattern">Please enter valid firstname.
+                            </div>
+                            <div class="form-error" ng-show="profile_form.firstname.$error.maxlength">
+                                  Please enter no more than 15 characters.
+                            </div>
+                            
+                          </div>
+                          <label  class="item item-input" ng-class="{'has-error':(profile_form.lastname.$submitted || profile_form.lastname.$touched && profile_form.lastname.$error.required  ) || (profile_form.lastname.$submitted || profile_form.lastname.$touched && profile_form.lastname.$error.pattern ) || (profile_form.lastname.$submitted || profile_form.lastname.$touched && profile_form.lastname.$error.maxlength)}">
+                              <input type="text" ng-pattern="/^[a-zA-Z]*$/" ng-model="profile.last_name"  name="lastname" placeholder="Last name" required  ng-maxlength="15">
+                          </label>
+                          <div ng-show="profile_form.lastname.submitted || profile_form.lastname.$touched">
+                            <div class="form-error" ng-show="profile_form.lastname.$error.required" >
+                                  Please enter lastname.
+                            </div>
+                            <div class="form-error" ng-show="profile_form.lastname.$error.pattern">Please enter valid lastname.
+                            </div>
+                            <div class="form-error" ng-show="profile_form.lastname.$error.maxlength">
+                                  Please enter no more than 15 characters.
+                            </div>
+
+                          </div>
+                         
+
+                          <label  class="item item-input" ng-class="{'has-error':(profile_form.phone.submitted || profile_form.phone.$touched && profile_form.phone.$invalid )}">
+                              <input type="tel"   ng-model="profile.phone" mask="(999) 999-9999" mask-clean="true"  name="phone" placeholder="Phone" required>
+                          </label>
+                          <div ng-show="profile_form.phone.submitted || profile_form.phone.$touched ">
+                            <div class="form-error" ng-show="profile_form.phone.required" >Enter a valid phone number.
+                            </div>
+                            <div class="form-error" ng-show="profile_form.phone.$invalid" 
+                              >Please enter at least  10 digits.
+                            </div>
+                           
+                          </div>
+
+                          <label  class="item item-input" ng-class="{'has-error':(profile_form.zipcode.submitted || profile_form.zipcode.$touched && profile_form.zipcode.$invalid )}">
+                              <input type="tel"  maxlength="5" ng-model="profile.zipcode"  mask="9" repeat="5" name="zipcode" placeholder="Zip code" required>
+                          </label>
+                          <div ng-show="profile_form.zipcode.submitted || profile_form.zipcode.$touched">
+                                <div class="form-error" ng-show="profile_form.zipcode.$invalid">
+                                  Please enter at least 5 digits.
+                                </div>
+                           </div>
+
+                          <label class="item item-input item-stacked-label profile-desc">
+                            <textarea placeholder="A brief description about yourself…" maxlength="40" ng-model="profile.about_me"></textarea>
+                          </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mobile-size">
+                      <div class="col-20 upload-image">
+                          <div class="image-wrap">
+
+                           
+                            <img  ng-src="{{profileImagePath}}{{profile.prof_image}}" id="fbprofileImage" err-src="img/user_default.jpg" />
+
+                            <img  id="profileImage" width="100" height="100" style="display:none">
+     
+                          </div>
+                      </div>
+                      <div class="col-80">
+                          <div class="list">
+                              <label class="item item-input file-input" ng-click="cameraOptions()">
+                              <span class="input-top">Profile Picture<i class="icon ion-camera"></i></span>
+                              </label>
+                          </div>
+                      </div>
+                      
+                  </div>
+                  <div class="row mobile-size">
+                      <div class="col-20 upload-image">
+                          <div class="image-wrap">
+
+                          
+                            <img  ng-src="{{profileCoverImagePath}}{{profile.cover_image}}" err-src="img/user_default.jpg" id="coverprofileImage" />
+
+                            <img  id="coverImage" width="100" height="100" style="display:none">
+     
+                          </div>
+                      </div>
+                      <div class="col-80">
+                          <div class="list">
+                              <label class="item item-input file-input" ng-click="covercameraOptions()">
+                              <span class="input-top">Cover Picture<i class="icon ion-camera"></i></span>
+                              </label>
+                          </div>
+                      </div>
+                      
+                  </div>
+
+                  <label class="item item-input  profile-desc">
+                      <textarea   rows="4" cols="4" placeholder="e.g. 37 Street Road, Downtown, New Jersey" name="place" ng-model="profile.address" ng-change="getAddress(profile.address)" g-places-autocomplete  required class="customlocation txt_pad">
+                      </textarea>
+                      <!-- options="autocompleteOptions" -->
+
+                     <span class="input-top"><i class="icon ion-location"></i></span>
+                  </label>
+                  <div id="placeautocomplete" class="placeautocomplete"></div>
+
+                  <div class="row">
+                    <div class="col-50">
+                      <label class="radio-label">I want to:</label>
+                    </div>
+                    <div class="col-50">
+
+                    <div class="toggle_dv">
+                    <div class="col1_2">
+                        <span>Post jobs</span>
+                    </div>
+                    <div class="col1_1">
+                    
+                        <label class="toggle login_toggle" ng-init="profile.role[0]=profile.role=='' ? true : profile.role[0]">
+                        
+                             <input ng-model="profile.role[0]" type="checkbox" name="postjob" />
+                             <div class="track">
+                                 <div class="handle"></div>
+                             </div>
+                        </label>
+                        </div>
+                        </div>
+                       
+                       <div class="toggle_dv">
+                       <div class="col1_2">
+                          <span>Find jobs</span></div>
+                          <div class="col1_1">
+                          <label class="toggle login_toggle">
+                               <input ng-model="profile.role[1]" type="checkbox"  name="postjob"/>
+                               <div class="track">
+                                   <div class="handle"></div>
+                               </div>
+                          </label>
+                          </div>
+                      </div>
+
+                       <!-- <p> <input type="checkbox" id="f-option" ng-model="profile.role[0]"  name="postjob" />
+                          <label for="f-option">Post jobs</label>
+                      </p>
+                      <p>
+                          <input type="checkbox" id="s-option" ng-model="profile.role[1]" name="postjob"/>
+                          <label for="s-option">Find jobs</label>
+                      </p> -->
+                      <div class="form-error" ng-show="profile_form.postjob.$invalid && !profile_form.postjob.$pristine" >Enter a valid Zipcode.
+                          </div>
+                    </div>
+                  </div>
+                  <!-- <div class="row">
+                    <div class="col">
+                      <h3 class="skill-titles">Skills</h3>
+                    </div>
+                  </div> -->
+                  <!-- <div class="row skill-check">
+                      
+                   
+                      <div  class="col">
+                        <p ng-repeat="skills in skillList">
+                          <input type="checkbox" id="{{skills._id}}"  ng-model="profile.tags[skills._id]"  ng-click="selectSkill(skills._id)" value="{{skills._id}}" ng-checked="{{skills.used}}" />
+                          <label for="{{skills._id}}">{{skills.skill}}</label>
+                        </p>
+                        
+                      </div>
+                      
+                    
+                  </div> -->
+                  <div class="row">
+                    <div class="col">
+                      <div class="list">
+                      <!-- {{skillList}} -->
+                         <!-- <tags-input  ng-model="profile.tags" class="skilltag" name="skill" ng-class="{'has-error':profile_form.skill.$invalid && !profile_form.skill.$pristine}"  placeholder="Skill" add-from-autocomplete-only="true" data-tap-disabled="true">
+                          <auto-complete   source="loadTags($query)">{{loadTags($query)}}</auto-complete>
+                         
+                          </tags-input> -->
+                         <div ng-show="resultNotFound" class="autocomplete  ng-scope">
+                              <ul class="suggestion-list notfound" >
+                              <li class="suggestion-item-selected not-found">
+                              <em>Not Found</em></li>
+                              </ul>
+                        </div> 
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <button  ng-disabled="profile_form.$invalid"  class="button button-block login-btn add-pr">
+                         SAVE
+                      </button>
+                    </div>
+                  </div>
+
+
+                  
+
+        </form>
+      </div>
+    </div>
+  </div>
+  
+</ion-content>
+
+<div class="bar bar-footer" ng-show="!uSkill && profile.role[1]">
+
+<ion-list class="edit-ski" >
+                     <ion-item class="item item-icon-left item-icon-right item_btn" ng-click="urSkill()"><!-- ui-sref="app.skillnew" -->
+                        <div  class="edski" ng-click="isshowhide_new($index)">
+                            Edit Your Skills
+                        </div>
+                      <i class="icon ion-chevron-right edic" ></i>
+                    </ion-item>
+</ion-list>
+</div>
+
+
+  <ion-content class="has-tabs" ng-show="uSkill">
+      <ion-list class="skill_dv">
+         <ion-item class="item item-icon-left item-icon-right skills_dv1" ng-repeat="skill in skillData" >
+            <div class="arrow_dv" ng-click="isshowhide_new($index)" ng-if="(skill.subSkills|filter:{is_deleted:false}).length >0" >
+                <span class="capitalize_title">{{skill.skill}}</span>
+                <i class="icon ion-chevron-down icon-accessory" ng-show="isbox_{{$index}}" ></i>
+                <i class="icon ion-chevron-up icon-accessory" ng-show="!isbox_{{$index}}" ></i>
+
+                
+            </div>
+            <!-- <ion-checkbox ng-if="skill.subSkills.length==0" ng-model="profile.tags[skill._id]" ng-click="selectSkill(skill._id)" ng-checked="{{skill.used}}">{{skill.skill}}</ion-checkbox> -->
+          
+            <div class="arrow_dv" ng-if="(skill.subSkills|filter:{is_deleted:false}).length ==0" ng-click="selectSkill(skill._id)" >
+             <span class="capitalize_title">{{skill.skill}}</span>
+            <i class="icon ion-checkmark icon-accessory" ng-show="skill.used" ></i>
+            </div>
+            <!-- <div class="arrow_dv"  ng-if="skill.subSkills.length==0" >
+            {{skill.skill}}
+            <i class="icon ion-checkmark icon-accessory"  ng-click="selectSkill(skill._id)" ></i>
+            </div> -->
+
+            
+          <div ng-show="isbox_{{$index}}" class="show_dv">
+
+             <div ng-repeat="skills in skill.subSkills " class="ng_rpt_dv" ng-if="!skills.is_deleted">
+
+             <img src="img/checked_tick.png" ng-show="skills.used" class="settrue  cursur fa fa-check-square-o fa-1x" title="Used on this Objective" data-ng-click="selectSkill(skills._id)">
+
+            <img src="img/unchecked.png" ng-hide="skills.used" class="settrue  cursur fa fa-square-o fa-1x ng-hide" title="Not on this Objective" data-ng-click="selectSkill(skills._id)">
+            <label class="ng_rpt_lbl capitalize_title" for="{{skills._id}}" data-ng-click="selectSkill(skills._id)">{{skills.skill}}</label>
+
+
+               
+               <!-- <input type="checkbox" id="{{skills._id}}"  ng-model="profile.tags[skills._id]"  ng-click="selectSkill(skills._id)" value="{{skills._id}}" ng-checked="{{skills.used}}" />
+                          <label for="{{skills._id}}">{{skills.skill}}{{skills.length}}</label> -->
+               <!-- <label for="{{subSkill._id}}">{{subSkill.skill}}</label> -->
+
+            </div>              
+          </div>
+           
+        </ion-item>
+        
+
+      </ion-list>
+    <!--   <div class="row">
+                    <div class="col">
+                      <button  ng-disabled="profile_form.$invalid"  ng-click="addprofile(profile)" class="button button-block login-btn">
+                         SAVE
+                      </button>
+                    </div>
+                  </div> -->
+
+    </ion-content>
+
+    <div class="bar bar-footer home-footer" ng-show="uSkill">
+
+<div  class="sub_btn1 btm-arr" ng-click="addprofile(profile)">
+    <ion-fab right bottom  class="infb" >
+    <button ion-fab color="light" class="infb-button" >
+    <i class="ion-chevron-right" ></i>
+  </ion-fab>
+                    
+</div>
+</div>
+
+</ion-view>
+
+
+
+
+
+
+

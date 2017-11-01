@@ -1,0 +1,235 @@
+<ion-view view-title="Find Jobs" ng-show="viewlisting">
+  <ion-content class="home-page has-tabs" >
+      <div class="profile-wrap" ng-show="userInformation.status==true">
+          <div class="search-bar">
+            <div class="list">
+              <label class="item item-input" ng-init="blur='true'">
+                <input type="text"  ng-model="query"  id="searchbar">
+                <span ng-hide="query.length>0" class="input-top"><i class="icon ion-ios-search"></i>Search</span>
+              </label>
+            </div>
+        </div>
+
+          <div class="pos-rel">
+              <ul class="topicon-list">
+                  <li><a href="javascript:void(0)"><img src="img/settings.png" alt="" ng-click="viewListToggle(listViewToggle)"/></a></li>
+                  <li ng-click="locationToggle(locationRange)"><a href="javascript:void(0)"><img src="img/loaction.png" alt="" /></a></li>
+                  <li ng-click="jobToggle(JobOrder)">
+                      <a href="javascript:void(0)"><img src="img/drop-down.png" alt="" /></a>
+                      
+                  </li>
+              </ul>
+               <div class="view-list" ng-show="listViewToggle">
+                  <div class="arrow_box">
+                       <ul class="check-wrap">
+                          <li>
+                              <input  ng-click="viewJob(true,false,dataslider.distanceRadius,type)" type="radio" id="mapview" checked="checked" />
+                             <label for="mapview">Map view</label>
+                         </li>
+                         <li>
+                              <input type="radio" ng-click="viewJob(false,true,dataslider.distanceRadius,type)" id="listview" checked="checked" />
+                             <label for="listview">List view</label>
+                         </li>
+                      </ul>
+                      
+                  </div>
+              </div>
+
+              <div class="dropdown-list" ng-show="JobOrder">
+                      <div class="arrow_box">
+                          <ul>
+                              <li ng-click="getdistance('10',type)" class="cursor">Nearest Me</li>
+                              <li ng-click="findMyJob(jobData,0)" class="cursor">My Skill</li>
+                              <li ng-click="findJob(jobData,1)" class="cursor">All Job</li>
+                              <li ng-click="sortBy('created_date',false)" class="cursor">Due Date Ascending</li>
+                              <li ng-click="sortBy('created_date',true)" class="cursor">Due Date Descending</li>
+                              <li ng-click="sortBy('budget',false)" class="cursor">Buget Ascending</li>
+                              <li ng-click="sortBy('budget',true)" class="cursor">Buget Descending</li>
+                          </ul>
+                      </div>
+              </div>
+          </div>
+          <div class="range-wrap" ng-show="locationRange">
+                      <div class="row" >
+                              <div class="range-calm range">
+                                <span class="icon-size"><i class="icon ion-ios-location-outline"></i>20 mi.</span>
+                                <input class="range-box" type="range" name="distanceRadiusnew" min="0" max="100" ng-model="dataslider.distanceRadius" on-release="getdistance(dataslider.distanceRadius,type)"/>
+                                <span class="icon-size"><i class="icon ion-ios-location"></i>100 mi.</span>
+                              </div>
+                      </div>
+                      <div class="row">
+                          <div class="col">
+                              <p class="location">Location: <span class=""><b>{{dataslider.distanceval}} mi.</b></span></p>
+                          </div>
+                      </div>
+           </div>   
+
+          <div class="your-Reviews findjobs myjob"> 
+              <ion-list class="offer-wrap find-wrap">
+                   <ion-item ng-repeat="Job in JobList | filter:query | orderBy:propertyName:reverse | limitTo:numberOfItemsToDisplay" class="no-padding" ng-click="detailJob(Job._id)">
+
+                   
+                   
+                     <div class="row">
+                          <div class="col-20">
+                              <div class="job-wrap">
+                                  <div class="img-wrap item-avatar left_cir_img">
+                                  <span class="table-cell">
+                                  <img ng-if="Job.category[0].icon" class="jobimage img-1" ng-src="{{skillIconImagePath}}{{Job.category[0].icon}}" alt=""/>
+                                   <img ng-if="!Job.category[0].icon" class="jobimage img-1" ng-src="img/defaultpost.png" alt="" />
+                                  </span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-80">
+                            	<div class="title-box">
+                              	<h2 class="review-name">{{Job.title}}</h2>
+                                  <span class="accept"> {{Job.budget | currency}}</span>
+                              </div>
+                              <!--<h2 class="review-name">{{Job.title}}<span class="accept"> {{Job.budget | currency}}</span></h2>-->
+                           
+                              <div class="div-wrap">
+                                  <div class="price-accept">
+                                      <div class="loaction post-date">
+                                          <img alt="" src="img/small-msg.png"><span>Due : {{Job.due_date | date}}</span>
+                                      </div>
+                                      <div class="loaction post-date">
+                                          <img alt="" src="img/globe.png"><span>{{Job.jobtype[0].name}}</span>
+                                      </div>
+
+                                      <div class="loaction offers-comment">
+                                          <img alt="" src="img/small-msg.png"><span>{{Job.offers.length}} Offers</span><span> | </span><span>{{Job.comments.length}} Comments</span>
+                                      </div>
+                                  </div>
+                                  <div class="next">
+                                      <a href="#/app/viewjob/{{Job._id}}"><i class="icon ion-chevron-right"></i></a>
+                                      <div class="tags-display">
+                                              
+                                          <span  class="open">Open</span>
+                                       </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    </ion-item>
+                   
+                    <ion-infinite-scroll on-infinite="addMoreItem()" ng-if="JobList.length > numberOfItemsToDisplay" >
+                          <ion-infinite-scroll-content
+                            loadingSpinner="bubbles"
+                            loadingText="Loading more data...">
+                          </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
+                  
+                    <span class="scroll-not-found" ng-if="JobList.length <= numberOfItemsToDisplay && (numberOfItemsToDisplay>2 && (JobList | filter:query | orderBy:propertyName:reverse | limitTo:numberOfItemsToDisplay).length>0) ">
+                        No more jobs :)
+                    </span>
+                    
+                    <span class="scroll-not-found" ng-if="query.length>0 && (JobList | filter:query | orderBy:propertyName:reverse | limitTo:numberOfItemsToDisplay).length==0 ">
+                       <!-- <i class="icon ion-android-alert"></i> --> No jobs listed.
+                    </span>
+
+                    
+              </ion-list>
+          </div>
+      </div>
+      <div class="row responsive-sm"  ng-show="JobList.length ==0">
+              <div class="col">
+                <h1 class="nothing-found-block nothing-found-post">
+                  <!-- <i class="icon ion-android-alert"></i> -->  No jobs listed.
+                </h1>
+              </div>
+      </div>
+
+      <div class="row responsive-sm account-status">
+              <div class="col">
+                <h1 ng-show="userInformation.status==false" class="nothing-found-block nothing-found-post">
+                  <!-- <i class="icon ion-android-alert"></i> --> Your account is not active yet.
+                </h1>
+              </div>
+    </div>
+  </ion-content>
+</ion-view>
+<ion-view ng-show="viewMapListing">
+  <ion-content>
+
+   <div class="profile-wrap" ng-show="userInformation.status==true">
+          <div class="search-bar">
+              <div class="list">
+                <label class="item item-input" ng-init="blur='true'">
+                  <input type="text" ng-focus="focus=true;blur=false;" ng-blur="blur=true;focus=false;" ng-model="query" placeholder="" id="searchbar">
+                  <span ng-show="blur" class="input-top"><i class="icon ion-ios-search"></i>Search</span>
+                </label>
+              </div>
+          </div>
+          
+          <div class="pos-rel">
+              <ul class="topicon-list">
+                   <li><a href="javascript:void(0)"><img src="img/settings.png" alt="" ng-click="viewMapToggle(listMapToggle)"/></a></li>
+                  <li ng-click="locationMapToggle(locationMapRange)"><a href="javascript:void(0)"><img src="img/loaction.png" alt="" /></a></li>
+                  <li ng-click="searchToggle(searchJob)"><a href="javascript:void(0)"><img src="img/drop-down.png" alt="" /></a></li>
+                  <!-- <li ng-click="JobOrder = !JobOrder">
+                      <a href="javascript:void(0)"><img src="img/drop-down.png" alt="" /></a>
+                      
+                  </li> -->
+                  
+              </ul>
+              <div class="view-list map-list map-view" ng-show="listMapToggle">
+                  <div class="arrow_box">
+                       <ul class="check-wrap">
+                           <li>
+                                <input  ng-click="viewJob(true,false,dataslider.distanceRadius,type)" type="radio" id="mapview1" checked="checked" />
+                               <label for="mapview1">Map view</label>
+                           </li>
+                          <li>
+                              <input type="radio" ng-click="viewJob(false,true,dataslider.distanceRadius,type)" id="listview1" checked="checked" />
+                             <label for="listview1">List view</label>
+                         </li>
+                        
+                         
+                      </ul>
+                      
+                  </div>
+              </div>
+              <div class="range-wrap" ng-show="locationMapRange">
+                      <div class="row" >
+                     
+                              <div class="range-calm range">
+                                <span class="icon-size"><i class="icon ion-ios-location-outline"></i>20 mi.</span>
+                                <input class="range-box" type="range" name="distanceRadiusnew" min="0" max="100" ng-model="dataslider.distanceRadius" on-release="getMapdistance(dataslider.distanceRadius,type)"/>
+                                <span class="icon-size"><i class="icon ion-ios-location"></i>100 mi.</span>
+                              </div>
+                      </div>
+                      <div class="row">
+                          <div class="col">
+                              <p class="location">Location: <span class=""><b>{{dataslider.distanceval}} mi.</b></span></p>
+                          </div>
+                      </div>
+              </div>  
+         
+              <div class="dropdown-list map-list" ng-show="searchJob">
+                  <div class="arrow_box">
+                       <ul class="check-wrap">
+                          <li>
+                              <input  ng-click="getAlljob(dataslider.distanceRadius,1)" type="radio" id="test2" checked="checked" />
+                             <label for="test2">All Jobs</label>
+                         </li>
+                         <li>
+                              <input type="radio" ng-click="getmyJob(dataslider.distanceRadius,0)" id="test3" checked="checked" />
+                             <label for="test3">Jobs for my skills</label>
+                         </li>
+                         <li ng-repeat="activeJob in activeJobs">
+                              <input type="radio" id="test{{$index}}" ng-click="getJobType(dataslider.distanceRadius,activeJob._id,type)" checked="checked" />
+                             <label for="test{{$index}}">{{activeJob.name}}</label>
+                         </li>
+                          
+                      </ul>
+                      
+                  </div>
+              </div>
+         
+   </div> 
+   <div style="float:left;width:100%">
+          <div id="map" data-tap-disabled="true" zoom="4" map></div>
+    </div>
+  </ion-content>
+</ion-view>

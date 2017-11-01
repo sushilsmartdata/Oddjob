@@ -1,0 +1,24 @@
+<ion-modal-view class="rate-modal review-modal">
+  <ion-content>
+
+    <form ng-submit="postRating(data)" class="review-form">
+      <a href="javascript:void(0)" class="close-modal" ng-click="closeLogin()"><i class="ion-close-circled"></i></a>
+      <div class="list">
+      <p class="review_txt"> Write a review to {{offerDetail.userid[0].first_name | capitalize }} {{offerDetail.userid[0].last_name | capitalize }}</p>
+        <div class="item">
+          <rating ng-model="data.rating" max="data.max"></rating>
+        </div>
+        <div class="item">
+          <textarea type="text" maxlength="150" ng-model="data.review"></textarea>
+        </div>
+        <div ng-if="rateValue" class="item">
+          {{rateValue}}
+        </div>
+        
+        <label class="item">
+          <button class="button button-block button-login" type="submit">Submit</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

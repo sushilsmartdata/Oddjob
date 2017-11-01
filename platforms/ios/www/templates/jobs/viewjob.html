@@ -1,0 +1,456 @@
+<ion-view view-title="View Job">
+  <ion-content class="home-page has-tabs">
+   <div class="profile-wrap">
+        <div class="profile-banner job-wrap">
+
+
+           <img ng-if="job.category[0].cover_image" alt="Job Icon" src="{{skillCoverImagePath}}{{job.category[0].cover_image}}" class="full-image"/>
+            <img ng-if="!job.category[0].cover_image" alt="Job Icon" err-src="img/default_cover.jpg" class="full-image"/>
+            
+            <div class="job-banner">
+              
+                  <h4>{{job.title}}</h4>
+                
+
+            </div>
+        </div>
+        
+        <div class="posted-by">
+          <div class="left-sec">
+              <div class="row">
+                  <div class="col-30">
+                      <div class="item img-wrap circle-img">
+                       <img  ng-click="userInfoData(job.creator[0]._id)" class="viewimage cursor"   ng-src="{{profileImagePath}}{{job.creator[0].prof_image}}" err-src="img/user_default.jpg">
+                     </div>
+                    </div>
+                    <div class="col-70 cursor" ng-click="userInfoData(job.creator[0]._id)">
+                      <h6>Posted by</h6>
+
+                        <h3>{{job.creator[0].first_name | capitalize }} {{job.creator[0].last_name | capitalize }}</h3>
+                        <div class="loaction">
+                        <i class="ion-ios-location-outline"></i><span>{{job.address}}</span>
+                        </div>
+                        <div class="loaction">
+                          
+                            <span>{{job.budget | currency}} budget</span>
+                            
+                        </div>
+                        <div class="loaction" ng-if="job.hours">
+                           
+                            <span>{{job.hours}} hours</span>
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+
+            <div class="right-sec">
+              <div class="loaction post-date">
+                  <img src="img/small-msg.png" alt=""/><span>Due : {{job.due_date| date }}</span>
+                </div>
+                <div class="loaction post-privacy">
+                  <i class="ion-ios-people"></i>
+                    <span>
+                        {{job.jobtype[0].name }}
+                    </span>
+                </div>
+                <div class="loaction offers-comment">
+                  <img src="img/small-msg.png" alt=""/><span>{{job.offers.length}} Offers</span><span> | </span><span>{{job.comments.length}} Comments</span>
+                </div>
+            </div>
+        </div>
+        <div class="row job-desc">
+          <div class="col col-70">
+              <p>{{job.description}}</p>
+
+            </div>
+            <div class="col col-20">
+               <div class="image-icon" >
+                <i ng-if="job.image" ng-click="showImage()" class="icon ion-search"></i>
+              <img  ng-if="job.image"  src="{{jobImagePath}}{{job.image}}" alt="" class="no-img"/>
+                <img  ng-if="!job.image"  ng-src="img/noimage2.png" alt="" class="no-img">
+              </div>
+            </div>
+
+        </div>
+
+        
+        <div class="your-Reviews offers">
+          
+          <!-- <a  class="myjob-jobtitle" ng-click="bankStatus(userInformation.connected_stripe_id,job._id)"><h4 class="title-wrap">Offers <span class="add-offer" ng-if="userInformation._id!=job.creator[0]._id && job.job_status==1 && makeOfferStatus==1" >+Make Offer</span></h4></a> -->
+          <a  class="myjob-jobtitle" ><h4 class="title-wrap" ><em ng-if="job.job_status==1">Offers</em> <em ng-if="job.job_status!=1">Job Activity</em> <span class="add-offer"  ng-if="userInformation._id!=job.creator[0]._id && job.job_status==1 && makeOfferStatus==1" ng-click="bankStatus(userInformation.connected_stripe_id,job._id)" >+Make Offer</span></h4></a>
+
+            <ion-list class="offer-wrap find-wrap">
+
+              <ion-item ng-repeat="offer in offers track by $index" class="add_req">
+ 
+                    <div class="row">
+                        <div class="col-20">
+                            <div class="item item-avatar" ng-if="userInformation._id==job.creator[0]._id">
+                              <img class="cursor" ng-click="userInfoData(offer.userid[0]._id)"  ng-src="{{profileImagePath}}{{offer.userid[0].prof_image}}" err-src="img/user_default.jpg">
+                              <!-- <img class="cursor" ng-click="userInfoData(offer.userid[0]._id)" ng-if="!offer.userid[0].prof_image" ng-src="img/user_default.jpg"> -->
+                            </div>
+                            <div class="item item-avatar" ng-if="userInformation._id!=job.creator[0]._id">
+                              <img  class="cursor" ng-click="userInfoData(offer.userid[0]._id)"  ng-src="{{profileImagePath}}{{offer.userid[0].prof_image}}" err-src="img/user_default.jpg">
+                              <!-- <img class="cursor" ng-if="!offer.userid[0].prof_image" ng-click="userInfoData(offer.userid[0]._id)"  ng-src="img/user_default.jpg"> -->
+                            </div>
+                        </div>
+                        <div class="col-80 hgnt_75">
+                            <h2 ng-if="userInformation._id==job.creator[0]._id" class="review-name cursor"  ng-click="userInfoData(offer.userid[0]._id)" >{{offer.userid[0].first_name | capitalize }}  {{offer.userid[0].last_name | capitalize }}
+                            </h2>
+                            <h2 ng-if="userInformation._id!=job.creator[0]._id" ng-click="userInfoData(offer.userid[0]._id)"  ng-if="userInformation._id!=job.creator[0]._id" class="review-name cursor"  >{{offer.userid[0].first_name | capitalize }}  {{offer.userid[0].last_name | capitalize }}
+                            </h2>
+                            <span  ng-if="(offer.created_date | date) == (currentDate | date) && userInformation._id!=job.creator[0]._id" class="post-date offer-date ">Today</span>
+                            <span  ng-if="(offer.created_date | date) == (previousDay | date) && userInformation._id!=job.creator[0]._id" class="post-date offer-date ">Yesterday</span>
+                            <span  ng-if="(offer.created_date | date) != (previousDay | date) && (offer.created_date | date) != (currentDate | date) && userInformation._id!=job.creator[0]._id" class="post-date offer-date ">{{offer.created_date | date  }}</span>
+
+                            <span  ng-click="viewOffer(job._id,offer._id)" ng-if="(offer.created_date | date) == (currentDate | date) && userInformation._id==job.creator[0]._id" class="post-date offer-date cursor">Today</span>
+                            <span  ng-click="viewOffer(job._id,offer._id)"  ng-if="(offer.created_date | date) == (previousDay | date) && userInformation._id==job.creator[0]._id" class="post-date offer-date cursor">Yesterday</span>
+                            <span ng-click="viewOffer(job._id,offer._id)"  ng-if="(offer.created_date | date) != (previousDay | date) && (offer.created_date | date) != (currentDate | date) && userInformation._id==job.creator[0]._id" class="post-date offer-date cursor">{{offer.created_date | date  }}</span>
+
+                            <div class="div-wrap viewjob">
+                                 <div class="price-accept ld">
+
+                                    <span class="price budget-price cursor" ng-click="viewOffer(job._id,offer._id)" ng-if="userInformation._id==job.creator[0]._id">{{offer.budget | currency}}</span>
+                                    <span class="price budget-price"  ng-if="userInformation._id!=job.creator[0]._id">{{offer.budget | currency}}</span>
+                                    <!-- <span ng-if="offer.status==2 && userInformation._id!=job.creator[0]._id&& offer.jobid[0].work_status==1" class="jobassigned">Accepted</span> -->
+                                         <!-- <span ng-if="offer.status==2 && userInformation._id==job.creator[$index]._id && offer.jobid[0].work_status==1" class="open" ng-click="changeJobStatus(job._id,2)">Change Status</span> -->
+                                        <!--  <span ng-if="offer.status==2 && userInformation._id!=job.creator[0]._id && offer.jobid[0].work_status==1" class="jobopen" ng-click="changeJobStatus(job._id,2)">In Progress</span> -->
+                                         
+  
+                                         <!-- <span ng-if="offer.status==2 && userInformation._id==job.winner[0]._id && offer.jobid[0].work_status==2" class="jobopen" ng-click="changeJobStatus(job._id,4)">Complete</span> -->
+                                        <div class="clearfix"></div>
+                                         <span class="approve_btn" ng-if="offer.status==2 && userInformation._id!=job.winner[0]._id && offer.jobid[0].work_status==4 && offers[0].jobid[0].worker_payment[0].status!='paid'" class="jobassigned" 
+                                        ng-click="approvedJob(job._id)"> Approve  </span>
+                                        
+                                        
+
+
+
+                                        <span class="approved_btn" ng-if="offer.status==2 && userInformation._id!=job.winner[0]._id && offer.jobid[0].work_status==4 && offers[0].jobid[0].worker_payment[0].status=='paid'"> <i class="ion-checkmark"></i> Approved  </span>
+
+                                         <span class="approved_btn" ng-if="offer.status==2 && userInformation._id==job.winner[0]._id && offer.jobid[0].work_status==4"> <i class="ion-checkmark"></i> Completed  </span>
+
+
+                                         <!-- <span ng-if="offer.status==2 && userInformation._id==job.winner[0]._id && offer.jobid[0].work_status==4" class="completed">Completed</span> -->
+                                        <!-- <span ng-if="offer.status==2 && userInformation._id==job.creator[0]._id && offer.jobid[0].work_status!=4" class="jobassigned">Assigned</span> -->
+                                        <!-- <span class="jobassigned" ng-click="msgModal()">Msg</span> -->
+                                        <!-- <span ng-if="offer.status==2 && userInformation._id==job.creator[0]._id && offer.jobid[0].work_status==4" class="completed">Completed</span> -->
+                     
+                                        <!-- <span ng-if="offer.status==2 && userInformation._id!=job.winner[0]._id && offer.jobid[0].work_status==4 && offers[0].jobid[0].worker_payment[0].status!='paid'" class="jobassigned" 
+                                        ng-click="approvedJob(job._id)">Approve</span> -->
+
+                          <span class="inpro_btn" ng-click="openjobProcess(job._id,offer.jobid[0].work_status)" ng-if="offer.status==2 && userInformation._id!=job.creator[0]._id && offer.jobid[0].work_status==1" >  Start Job <i class="ion-chevron-down"></i>
+                          </span>
+                          
+                           <span class="inpro_btn" ng-click="openjobProcess(job._id,offer.jobid[0].work_status)" ng-if="offer.status==2 && userInformation._id==job.winner[0]._id && offer.jobid[0].work_status==2" >  In progress  <i class="ion-chevron-down"></i>
+                           </span>
+
+                                        
+                                </div>
+
+                                <div class="rd"  ng-if="userInformation._id==job.creator[0]._id">
+                                  <div class="next next-viewjob " >
+
+                                  <a ng-if="job.job_status==1" href="#/app/acceptoffer/{{job._id}}/{{offer._id}}"><i class="icon ion-chevron-right"></i></a>
+                                  <a ng-if="job.job_status!=1" href="#/app/messages"><i class="icon ion-chevron-right"></i></a>
+                                   
+                                </div>
+
+                                 <div class="clearfix"></div>
+
+
+               
+
+
+                                <span class="assigned_btn" ng-if="offer.status==2 && userInformation._id==job.creator[0]._id && offer.jobid[0].work_status!=4"> <i class="ion-checkmark"></i> Assigned  </span>
+
+
+
+
+
+                                <span class="accepted_btn" ng-if="offer.status==2 && userInformation._id!=job.creator[0]._id && offer.jobid[0].work_status==1">  <img ng-src="img/accepted_icon.png" >Accepted </span>
+
+
+                                </div>  
+
+                                  <div class="tags-display" ng-class="{btnpos:offer.status==2}">
+
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row additional_row" ng-if="job.addtional_jobs[0].job_status==1 &&job.creator[0]._id!=userInformation._id && job.work_status!=4">
+                    <ul style="float:left;width:100%" ng-if="job.addtional_jobs.length>0" >
+                                          <li>
+                                            <span style="float:left">Additional Job Budget </span>
+                                            <span style="float:right">{{job.addtional_jobs[0].budget | currency}}</span>
+                                          </li>
+                                        <div class="tags-display dis_tag">
+                                            <span  class="assigned">Pending</span>
+                                        </div>
+
+                                         <!--  <li>
+                                            <span style="float:left;font-weight: 600;">Total Amount</span>
+                                            <span style="float:right;font-weight: 600;">{{job.addtional_jobs[0].budget + offer.budget | currency}}</span>
+                                          </li> -->
+
+                                        </ul>
+                    </div>
+
+                     <div class="row additional_row" ng-if="job.addtional_jobs[0].job_status==1 && job.creator[0]._id==userInformation._id && job.work_status!=4" >
+                    <ul style="float:left;width:100%" ng-if="job.addtional_jobs.length>0" >
+                                          <li>
+                                            <span style="float:left">Additional Job Budget </span>
+                                            <span style="float:right">{{job.addtional_jobs[0].budget | currency}}</span>
+                                          </li>
+                                       <div class="tags-display dis_tag">
+                                            <span  class="assigned">Pending</span>
+                                        </div>
+                                          <!-- <li>
+                                            <span style="float:left;font-weight: 600;">Total Amount</span>
+                                            <span style="float:right;font-weight: 600;">{{job.addtional_jobs[0].budget + offer.budget | currency}}</span>
+                                          </li> -->
+
+                                        </ul>
+                    </div>
+
+                    <div class="row additional_row" ng-if="job.addtional_jobs[0].job_status!=1">
+                    <ul style="float:left;width:100%" ng-if="job.addtional_jobs.length>0" >
+                                          <li>
+                                            <span style="float:left">Additional Job Budget</span>
+                                            <span style="float:right">{{job.addtional_jobs[0].budget | currency}}</span>
+                                          </li>
+                                          <li>
+                                            <span style="float:left;font-weight: 600;">Total Amount</span>
+                                            <span style="float:right;font-weight: 600;">{{job.addtional_jobs[0].budget + offer.budget | currency}}</span>
+                                          </li>
+
+                                        </ul>
+                    </div>
+
+                    <div ng-if="job.addtional_jobs.length>0 && job.addtional_jobs[0].job_status!=1 && job.creator[0]._id==userInformation._id">   
+                     <div class="tags-display dis_tag tag_link">
+                         <a ng-click="widgetExpanded = !widgetExpanded" class="head" > <i class="ion-plus" ng-if="widgetExpanded!=true"></i> <i class="ion-minus" ng-if="widgetExpanded==true"></i> Change Request</a>
+                     </div>
+                    
+
+                     <div class="row pos_rel1 new_req">
+
+                       <div id="derp" ng-slide-down="widgetExpanded" lazy-render duration="1" class="slideable sliadble_1 sec_opt "  >
+                            <!-- <i class="ion-ios-close"></i> -->
+                             <div class="list">
+                                  <label>Changed Request </label>
+                                 <!--  <p class="req_price">Total :{{job.addtional_jobs[0].budget + offer.budget | currency}}</p> -->
+                                  <p class="req_price">Budget :{{job.addtional_jobs[0].budget | currency}}</p>
+                                  <p class="req_price">Descirption:{{job.addtional_jobs[0].description}}</p>
+                             </div>
+                             <!-- <div class="padding sub_drop_btn">
+                                <button type="button" class="button post-button" ng-disabled="myForm.$invalid" ng-click="acceptOffer(job._id,job.addtional_jobs[0].budget)">Approve</button>
+                              </div> -->
+                                             
+                        </div>
+                    </div>
+                    </div>
+                    <div ng-if="job.addtional_jobs.length>0 && job.addtional_jobs[0].job_status!=1 && job.creator[0]._id!=userInformation._id">   
+                     <div class="tags-display dis_tag tag_link">
+                         <a ng-click="widgetExpanded = !widgetExpanded" class="head" > <i class="ion-plus" ng-if="widgetExpanded!=true"></i> <i class="ion-minus" ng-if="widgetExpanded==true"></i> Change Request</a>
+                     </div>
+                    
+
+                     <div class="row pos_rel1 new_req">
+
+                       <div id="derp" ng-slide-down="widgetExpanded" lazy-render duration="1" class="slideable sliadble_1 sec_opt "  >
+                            <!-- <i class="ion-ios-close"></i> -->
+                             <div class="list">
+                                  <label>Changed Request </label>
+                                 <!--  <p class="req_price">Total :{{job.addtional_jobs[0].budget + offer.budget | currency}}</p> -->
+                                  <p class="req_price">Budget :{{job.addtional_jobs[0].budget | currency}}</p>
+                                  <p class="req_price">Descirption:{{job.addtional_jobs[0].description}}</p>
+                             </div>
+                             <!-- <div class="padding sub_drop_btn">
+                                <button type="button" class="button post-button" ng-disabled="myForm.$invalid" ng-click="acceptOffer(job._id,job.addtional_jobs[0].budget)">Approve</button>
+                              </div> -->
+                                             
+                        </div>
+                    </div>
+                    </div>
+                     
+                    <ion-option-button ng-if="job.job_status==1 && userInformation._id==offer.userid[0]._id" class="button-positive"
+                              ng-click="editOffer(job._id,offer._id)"
+                                       >
+                       Edit
+                    
+                    </ion-option-button>
+                    
+               </<ion-item>
+             
+            </ion-list>
+        </div>
+         <div class="row responsive-sm" ng-show="offers.length ==0">
+            <div class="col">
+              <h1  class="nothing-found-block nothing-found-post">
+                <!-- <i class="icon ion-android-alert"></i> -->  No offers yet.
+              </h1>
+            </div>
+         </div>
+        <div class="your-Reviews "> 
+          <h4 class="title-wrap">Comments<a  class="myjob-jobtitle" href="#/app/comment/{{job._id}}/{{job.creator[0]._id}}/{{commentThreadId}}"><span class="add-offer" ng-if="job.creator[0]._id!=userInformation._id">+Post Comment</span></a></h4>
+
+          
+            <ion-list class="offer-wrap find-wrap">
+              <ion-item ng-repeat="comment in comments"  class="no-padding cmnt" ng-click="userInformation._id == comment.userid._id || userInformation._id == comment.authorid._id ? viewComment(job._id,job.creator[0]._id,comment._id):  'false' ">
+
+
+                    <div class="row">
+                        <div class="col-25" ng-if="comment.comment[comment.comment.length-1].userid==comment.userid._id">
+                            <div class="item item-avatar user-comment-image" ng-if="job.creator[0]._id==userInformation._id">
+                              <img  src="{{profileImagePath}}{{comment.userid.prof_image}}" err-src="img/defaultpost.png"/>
+                              <!-- <img ng-if="!comment.userid.prof_image" src="img/defaultpost.png"/> -->
+                            </div>
+                            <div class="item item-avatar user-comment-image" ng-if="job.creator[0]._id!=userInformation._id">
+                              <img   src="{{profileImagePath}}{{comment.userid.prof_image}}" err-src="img/defaultpost.png"/>
+                              <!-- <img  ng-if="!comment.userid.prof_image" src="img/defaultpost.png"/> -->
+                            </div>
+                        </div>
+                        <div class="col-25" ng-if="comment.comment[comment.comment.length-1].userid==comment.authorid._id">
+                            <div class="item item-avatar user-comment-image" ng-if="job.creator[0]._id==userInformation._id">
+                              <img ng-if="comment.authorid.prof_image" src="{{profileImagePath}}{{comment.authorid.prof_image}}"/>
+                              <img ng-if="!comment.authorid.prof_image" src="img/defaultpost.png"/>
+                            </div>
+                            <div class="item item-avatar user-comment-image" ng-if="job.creator[0]._id!=userInformation._id">
+                              <img  ng-if="comment.authorid.prof_image" src="{{profileImagePath}}{{comment.authorid.prof_image}}"/>
+                              <img  ng-if="!comment.userid.prof_image" src="img/defaultpost.png"/>
+                            </div>
+                        </div>
+
+                        <div class="col-75" ng-if="comment.comment[comment.comment.length-1].userid==comment.userid._id">
+                        
+                            <h2 class="review-name" ng-if="job.creator[0]._id==userInformation._id" >{{comment.userid.first_name | capitalize }}  {{comment.userid.last_name | capitalize }}</h2>
+                            <h2 class="review-name" ng-if="job.creator[0]._id!=userInformation._id">{{comment.userid.first_name | capitalize }}  {{comment.userid.last_name | capitalize }}</h2>
+                            <span class="post-date">{{comment.comment[0].comment_date | date}}</span>
+                            <div class="div-wrap">
+                                <div class="price-accept">
+                                
+                                    <p><span>{{comment.comment[comment.comment.length-1].comment_date | date}}</span>{{comment.comment[comment.comment.length-1].text}}</p>
+                                </div>
+                                <div class="next next-viewjob" ng-if="userInformation._id == comment.userid._id || userInformation._id == comment.authorid._id ">
+                                    <a href="#/app/comment/{{job._id}}/{{job.creator[0]._id}}/{{comment._id}}"><i class="icon ion-chevron-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-75" ng-if="comment.comment[comment.comment.length-1].userid==comment.authorid._id">
+                        
+                            <h2 class="review-name" ng-if="job.creator[0]._id==userInformation._id" >{{comment.authorid.first_name | capitalize }}  {{comment.authorid.last_name}}</h2>
+                            <h2 class="review-name" ng-if="job.creator[0]._id!=userInformation._id">{{comment.authorid.first_name | capitalize }}  {{comment.authorid.last_name}}</h2>
+                            <span class="post-date">{{comment.comment[0].comment_date | date}}</span>
+                            <div class="div-wrap">
+                                <div class="price-accept">
+                                
+                                    <p><span>{{comment.comment[comment.comment.length-1].comment_date | date}}</span>{{comment.comment[comment.comment.length-1].text}}</p>
+                                </div>
+                                <div class="next next-viewjob" ng-if="userInformation._id == comment.userid._id || userInformation._id == comment.authorid._id">
+                                    <a href="#/app/comment/{{job._id}}/{{job.creator[0]._id}}/{{comment._id}}"><i class="icon ion-chevron-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <ion-option-button class="button-assertive" ng-if="job.creator[0]._id==userInformation._id"
+                             ng-click="deleteThread(comment._id)">
+                                    Delete
+                            </ion-option-button>   
+                 </ion-item>
+            </ion-list>
+               
+            </ul>
+        </div>
+    </div>
+  <script id="image-modal.html" type="text/ng-template">
+              <div class="modal image-modal transparent" ng-click="closeModal()">
+              <ion-scroll zooming="true"
+            direction="xy" 
+            delegate-handle="zoom-pane" 
+            class="zoom-pane" 
+            min-zoom="1" 
+                    scrollbar-x="false" 
+                scrollbar-y="false" 
+            overflow-scroll="false" 
+           > 
+           <div class="modal-image">
+            
+                  <img ng-if="job.image" src="{{jobOriginalImagePath}}{{job.image}}" alt="" />
+                     <img ng-if="!job.image" ng-src="{{imageSrc}}" />
+            </div>      
+
+                  </ion-pane>
+             </ion-scroll>
+
+    </script>
+
+    <script id="image-modal.html" type="text/ng-template">
+              <div class="modal image-modal transparent" ng-click="closeModal()">
+              <ion-scroll zooming="true"
+            direction="xy" 
+            delegate-handle="zoom-pane" 
+            class="zoom-pane" 
+            min-zoom="1" 
+                    scrollbar-x="false" 
+                scrollbar-y="false" 
+            overflow-scroll="false" 
+           > 
+           <div class="modal-image">
+            
+                  <img ng-if="job.image" src="{{jobOriginalImagePath}}{{job.image}}" alt="" />
+                     <img ng-if="!job.image" ng-src="{{imageSrc}}" />
+            </div>      
+
+                  </ion-pane>
+             </ion-scroll>
+
+    </script>
+
+     <script id="jobprocess.html" type="text/ng-template">
+              
+              <div class="modal image-modal transparent" ng-click="closejobProcess()">
+          
+        
+        <ion-content class="padding">
+          <div class="list cslist" >
+              <ul>
+             
+                <li class="inprogress cursor" ng-class="popupWorkStatus==2? 'dis': '' " 
+                ng-click="popupWorkStatus==1? changeJobStatus(popupJobId,2):  'false' ">   
+                <span > <img ng-src="img/in-progress_icon.png" > In progress </span > </li>
+                <li class="wcompleted cursor" ng-class="popupWorkStatus==4 || popupWorkStatus==1? 'dis': '' " ng-click="popupWorkStatus==2? changeJobStatus(popupJobId,4):  'false' ">  <span > <img ng-src="img/accepted_icon.png" > Completed </span> </li>
+              </ul>   
+          </div>
+        </ion-content>
+      </div>
+
+    </script>
+    <!-- <script id="jobprocess.html" type="text/ng-template">
+              
+              <div class="modal image-modal transparent" ng-click="closejobProcess()">
+          
+        
+        <ion-content class="padding">
+          <div class="list cslist" >
+              <ul>
+                <li class="inprogress">  <span > <img ng-src="img/in-progress_icon.png" > In progress </span > </li>
+                <li class="wcompleted">  <span > <img ng-src="img/accepted_icon.png" > Completed </span> </li>
+              </ul>   
+          </div>
+        </ion-content>
+      </div>
+
+    </script> -->
+     <div class="row responsive-sm">
+            <div class="col">
+              <h1 ng-show="comments.length ==0" class="nothing-found-block nothing-found-post">
+                <!-- <i class="icon ion-android-alert"></i> -->  No comments yet.
+              </h1>
+            </div>
+    </div>
+  </ion-content>
+</ion-view>
+

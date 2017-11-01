@@ -1,0 +1,53 @@
+<ion-view view-title="Feedback" class="view_class">
+
+  <ion-content class="home-page has-tabs feedback-box">
+    <div class="profile-wrap full-height">
+
+        <div class="profile-banner job-wrap feedback-wraps">
+              <img  alt="Profile Banner"  src="img/feedback.png" class="full-image ng-cloak"/>
+             
+              <div class="job-title">
+                  <h5>Help Us Improve</h5>
+                </div>
+            
+        </div>
+        
+      <form name="feedback_form" id="post" ng-submit="feedback(feed)" autocomplete="off" class="full-height height-full">
+        <div class="row form-wrap">
+            <div class="col">
+                <div class="list">
+                    <span class="input-label feedback">Feedback Type</span>      
+                    <label class="item item-input item-stacked-label">
+                      
+                      <select class="item feedback-option" ng-init="feed.type = options[0]" 
+                          ng-model="feed.type" value="options.name"
+                          ng-options="option.name for option in options">
+                          </select>
+                    </label>
+                    <span class="input-label">Description</span>      
+                    <label class="item item-input item-stacked-label">
+                      <textarea type="text"  placeholder="Describe your issue or share an idea..." ng-model="feed.description"  required></textarea>
+                    </label>
+                    <div ng-show="feedback_form.description.$dirty && feedback_form.description.$invalid">
+                              <div class="post-form-error" ng-show="feedback_form.description.$error.required">
+                                    Please enter description.
+                              </div>
+                            
+                    </div> 
+                    <div class="mobile-size">
+                       <label class="item item-input file-input" ng-click="cameraOptions()">
+                          <span class="input-top" >Upload Screen<i class="icon ion-camera posticon"></i></span>
+                        </label>
+                        <img  id="feebackImage" width="100" height="100" style="display:none">
+                    </div>
+              </div>
+
+                <div class="post-job">
+                    <button class="button post-button" ng-disabled="feedback_form.$invalid">Submit Feedback</button>
+                </div>  
+            </div>
+        </div>
+      </form>
+    </div>
+  </ion-content>  
+</ion-view>

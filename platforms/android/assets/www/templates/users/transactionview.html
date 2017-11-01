@@ -1,0 +1,124 @@
+<ion-view view-title="Transaction Detail">
+  <ion-content class="home-page has-tabs">
+   <div class="profile-wrap">
+        <div class="profile-banner job-wrap">
+           <img ng-if="job.category[0].cover_image" alt="Job Icon" src="{{skillCoverImagePath}}{{job.category[0].cover_image}}" class="full-image"/>
+            <img ng-if="!job.category[0].cover_image" alt="Job Icon" src="img/default_cover.jpg" class="full-image"/>
+            
+            <div class="job-banner">
+            	
+                	<h4>{{job.title | uppercase}}</h4>
+            </div>
+        </div>
+        <div class="posted-by transaction ">
+        	<div class="left-sec">
+            	<div class="row">
+                	<div class="col-30" ng-if="paymentType=='paid'">
+                    	<div class="item img-wrap circle-img">
+                       <img class="viewimage"ng-if="job.winner[0].prof_image" ng-src="{{profileImagePath}}{{job.winner[0].prof_image}}">
+                              <img class="viewimage" ng-if="!job.winner[0].prof_image" ng-src="img/user_default.jpg">
+               			 </div>
+                    </div>
+                    <div class="col-30" ng-if="paymentType=='recieved'">
+                      <div class="item img-wrap circle-img">
+                       <img class="viewimage"ng-if="job.creator[0].prof_image" ng-src="{{profileImagePath}}{{job.creator[0].prof_image}}">
+                              <img class="viewimage" ng-if="!job.creator[0].prof_image" ng-src="img/user_default.jpg">
+                     </div>
+                    </div>
+                    <div class="col-70">
+                      <h6 ng-if="paymentType=='paid'">Worked by</h6>
+                    	<h6 ng-if="paymentType=='recieved'">Posted by</h6>
+
+                        <h3 ng-if="paymentType=='paid'">{{job.winner[0].first_name}} {{job.winner[0].last_name}}</h3>
+                        <h3 ng-if="paymentType=='recieved'">{{job.creator[0].first_name}} {{job.creator [0].last_name}}</h3>
+                    </div>
+                </div>
+            	
+            </div>
+
+            
+      </div>
+ 
+  <div class="list transaction-view" ng-if="paymentType=='paid'">
+
+          <a class="item item-icon-left">
+            <i class="icon ion-social-usd"></i>
+            Job Amount 
+            <span class="badge badge-balanced custom-badge ">${{job.winner_offer[0].budget}}</span>
+            
+          </a>
+
+          <a class="item item-icon-left item-icon-right">
+            <i class="icon ion-cash"></i>
+            Oddjob Commission
+            <span class="badge badge-balanced custom-badge">{{job.admin_commission.job_poster}}%</span>
+            
+          </a>
+
+          <a class="item item-icon-left">
+            <i class="icon ion-ios-briefcase"></i>
+            Total Amount 
+            <span class="badge badge-balanced custom-badge">${{job.winner_offer[0].budget+(job.winner_offer[0].budget * job.admin_commission.job_poster)/100}} </span>
+            
+          </a>
+
+        <a class="item item-icon-left">
+          <i class="icon ion-card"></i>
+          Txn.Id 
+          <span class="badge badge-balanced custom-badge">{{job.admin_payment[0].transaction_id}}</span>
+          
+        </a>
+
+        <a class="item item-icon-left">
+          <i class="icon ion-calendar"></i>
+          Txn.Date
+          <span class="badge badge-balanced custom-badge">{{job.admin_payment[0].txn_date |date}}</span>
+       
+        </a>
+
+    </div>
+
+    <div class="list" ng-if="paymentType=='recieved'">
+
+          <a class="item item-icon-left">
+            <i class="icon ion-social-usd"></i>
+            Job Amount 
+            <span class="badge badge-balanced custom-badge">${{job.winner_offer[0].budget}}</span>
+            
+          </a>
+
+          <a class="item item-icon-left item-icon-right">
+            <i class="icon ion-cash"></i>
+            Oddjob Commission
+            <span class="badge badge-balanced custom-badge">-{{job.admin_commission.job_finder}}%</span>
+            
+          </a>
+
+          <a class="item item-icon-left">
+            <i class="icon ion-ios-briefcase"></i>
+            Total Amount 
+            <span class="badge badge-balanced custom-badge">${{job.winner_offer[0].budget-(job.winner_offer[0].budget * job.admin_commission.job_finder)/100}} </span>
+            
+          </a>
+
+        <a class="item item-icon-left">
+          <i class="icon ion-card"></i>
+          Txn.Id 
+          <span class="badge badge-balanced custom-badge">{{job.worker_payment[0].transaction_id}}</span>
+          
+        </a>
+
+        <a class="item item-icon-left">
+          <i class="icon ion-calendar"></i>
+          Txn.Date
+          <span class="badge badge-balanced custom-badge">{{job.worker_payment[0].txn_date |date}}</span>
+       
+        </a>
+
+    </div>
+
+   </div>
+</ion-content>
+</ion-view>
+
+

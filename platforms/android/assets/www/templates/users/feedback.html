@@ -1,0 +1,49 @@
+<ion-view view-title="Feedback">
+
+  <ion-content class="home-page has-tabs" >
+    <div class="profile-wrap">
+
+        <div class="profile-banner job-wrap">
+              <img  alt="Profile Banner" ng-src="{{skillCoverImagePath}}{{skillDetail.cover_image}}" err-src="img/user_default.jpg" class="full-image ng-cloak"/>
+             <div class="job-banner">
+              <div class="job-title">
+                  <h5>{{skillDetail.skill}}</h5>
+                </div>
+            </div>
+        </div>
+        
+      <form name="feedback_form" id="post" ng-submit="feedback(feed)" autocomplete="off">
+        <div class="row form-wrap">
+            <div class="col">
+                <div class="list">
+                    <span class="input-label feedback">Feedback Type</span>      
+                    <label class="item item-input item-stacked-label">
+                      <select ng-init="type = options[0]" 
+                          ng-model="type" 
+                          ng-options="option.name for option in options">
+                      </select>
+                    </label>
+
+
+                    <span class="input-label">Description</span>      
+                    <label class="item item-input item-stacked-label">
+                      <textarea type="text" maxlength="150" placeholder="Describe your issue or share an idea..." ng-model="feed.description"></textarea>
+                    </label>
+                    <div class="mobile-size">
+                       <label class="item item-input file-input" ng-click="cameraOptions()">
+                          <span class="input-top" >Upload Attachment(s)<i class="icon ion-camera posticon"></i></span>
+                        </label>
+                            
+                        
+                    </div>
+              </div>
+
+                <div class="post-job">
+                    <button class="button post-button" ng-disabled="post_form.$invalid">Submit Feedback</button>
+                </div>  
+            </div>
+        </div>
+      </form>
+    </div>
+  </ion-content>  
+</ion-view>

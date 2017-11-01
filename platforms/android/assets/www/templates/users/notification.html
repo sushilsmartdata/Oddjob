@@ -1,0 +1,63 @@
+<ion-view view-title="Notifications">
+<ion-content class="home-page userskill has-tabs">
+
+    <div class="profile-wrap">
+        <div class="your-Reviews">  
+        <ion-list>
+      <!--   {{notifyDetail}} -->
+        <ion-item ng-repeat="notify in notifyDetail" class="review-item-list">
+           
+
+            <div class="row">
+                <div class="col-20" >
+                <div class="job-wrap">
+                  
+                   <div class="job-wrap left_img_p">
+                                <div class="img-wrap item-avatar left_cir_img" style="width: 50px;height: 50px;min-height: 50px;">
+                                
+                                <span class="table-cell">
+                                       <i class="icon ion-volume-high" style="font-size: 1.5em;color: #4ba75c;"></i> 
+                                    </span>
+                             
+                                        
+                                </div>
+                            </div>
+                     
+                 </div>
+                </div>
+                
+                <div class="col-80 rew"><a href="#/app/viewjob/{{notify.job_id}}">
+                <div class="title-box">
+                     
+                    <h2 class="review-name cursor review-title rtit" ><span ng-if="notify.message_type==1">New job</span>
+                                <span ng-if="notify.message_type==2">Offer</span>
+                                <span ng-if="notify.message_type==3">Assigned new job</span>                              
+                                <span ng-if="notify.message_type==4">Job In Progress</span>
+                                <span ng-if="notify.message_type==5">Job Completed</span>
+                                <span ng-if="notify.message_type==6">Job Verified</span>
+                                <span ng-if="notify.message_type==7">Additional Job</span>
+                                <span ng-if="notify.message_type==8">Approved Additional Job</span></h2>
+                     </div>
+                    
+                   
+                    <div class="div-wrap u-wrap">
+                   <p><span class="review_span">{{notify.text  | capitalize}}</span><br/><span>{{notify.created_date | date:'medium'}}</span></p>
+                   </div>
+                   </a>
+                </div>
+            </div>
+            </ion-item>
+            
+            </ion-list>
+        </div>
+    </div>
+    <div class="row responsive-sm">
+            <div class="col">
+              <h1 ng-show="reviewList.length ==0" class="nothing-found-block nothing-found-post">
+                <!-- <i class="icon ion-android-alert"></i> -->  No Notifications yet.
+              </h1>
+            </div>
+     </div>
+  </ion-content>
+  
+</ion-view>

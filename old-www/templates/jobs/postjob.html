@@ -1,0 +1,165 @@
+<ion-view view-title="Post a Job" ng-init="findJobdetail()">
+
+  <ion-content class="home-page has-tabs" >
+    <div class="profile-wrap">
+
+        <div class="profile-banner job-wrap">
+       
+             <img  ng-src="{{skillCoverImagePath}}{{skillDetail.cover_image}}"  class="full-image ng-cloak" err-src="img/default_cover.jpg"/>
+             
+             <div class="job-banner">
+             
+                  <h4>{{skillDetail.skill }}</h4>
+                
+            </div>
+        </div>
+        
+      <form name="post_form" id="post" ng-submit="jobPost(post)" autocomplete="off" >
+        <div class="row form-wrap">
+            <div class="col">
+                <div class="list">
+                    <span class="input-label">Job Title</span> 
+                    <label  class="item item-input item-stacked-label" ng-class="{'has-error':post_form.postname.$invalid && !post_form.postname.$pristine}">
+                        <input type="text"   ng-model="post.title"  name="postname" ng-pattern="/^([a-zA-Z0-9 ]*)$/" ng-maxlength="20"  required>
+
+                         <input ng-if="post._id" type="hidden" ng-model="post._id">
+
+                    </label>
+                    <div ng-show="post_form.postname.$dirty && post_form.postname.$invalid">
+                              <div class="post-form-error" ng-show="post_form.postname.$error.required" >
+                                    Please enter job title.
+                              </div>
+                              <div class="post-form-error" ng-show="post_form.postname.$error.pattern">Please enter valid job title.
+                              </div>
+                              <div class="post-form-error" ng-show="post_form.postname.$error.maxlength">
+                                    This field can be at most 20 characters long.
+                              </div>
+                    </div>
+                    
+                    <span class="input-label">Description</span>      
+                    <label class="item item-input item-stacked-label">
+                      <textarea type="text" maxlength="150" placeholder="" ng-model="post.description"></textarea>
+                    </label>
+
+
+                    <span class="input-label">Due Date</span>      
+                    <label class="item item-input item-stacked-label item-stacked-label-grey">
+
+                    <input type="date" name="due_date" ng-model="post.due_date"  required>
+                    
+                    </label>
+                  <div class="post-form-error" ng-if="post_form.due_date.$error.required && post_form.due_date.$dirty">
+                                    Please enter date.
+                  </div>
+                  
+                  <div class="post-form-error" ng-show="post.due_date!=undefined && (post.due_date|date:'yyyy-MM-dd')<=(currentDate | date:'yyyy-MM-dd')">
+                                    Please enter future date.
+                  </div>
+
+                  <div class="post-form-error" ng-show="post.due_date!=undefined && (post.due_date|date:'yyyy-MM-dd')>=(maxDate | date:'yyyy-MM-dd')">
+                                    Maximum future date is 1 year.
+                  </div>
+                  
+                  <div class="row mobile-size size_m">
+                        <div class="col-20 upload-image">
+                            <div class="image-wrap m-image">
+                              
+                              <img class="jobimage"  ng-src="{{jobImagePath}}{{post.image}}" err-src="img/defaultpost.png" id="fbprofileImage" width="100" height="100" />
+                              <img  id="profileImage" class="jobimage" style="display:none" />
+                            </div>
+                        </div>
+                        <div class="col-80">
+                            <div class="list upload_list">
+                                <label class="item item-input file-input" ng-click="cameraOptions()">
+                                <span class="input-top" >Upload Attachment(s)<i class="icon ion-camera posticon"></i></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                  
+                  <label class="item item-input item-stacked-label file-input">
+                      <input type="text" ng-class="{'has-error':post_form.place.$invalid && !post_form.place.$pristine}" rows="4" placeholder="e.g. 37 Street Road, Downtown, New Jersey" name="place" ng-model="post.place" ng-change="update(place)" g-places-autocomplete  required class="customlocation txt_pad"/>
+                      <!-- options="autocompleteOptions" -->
+
+                     <span class="input-top"><i class="icon ion-location"></i></span>
+                  </label>
+                  <div id="placeautocomplete" class="placeautocomplete"></div>
+
+                  <div class="post-form-error post-job-error" ng-show="post_form.place.$invalid && !post_form.place.$pristine"  >
+                               Enter a place.
+                  </div>
+
+                  <span class="input-label" ng-show="skillDetail.job_type"></span>      
+
+
+                  <div class="custom-radios item-stacked-label" ng-show="skillDetail.job_type">
+                    <div class="radio-1" ng-repeat="activeJob in activeJobs | orderBy:activeJob.name:reverse" ng-click='getType(activeJob._id)' ng-class="{'radio-active': jobtype==activeJob._id}">
+                      
+                      <label>{{activeJob.name}}</label>
+                      <input  type="radio" name="inperson" ng-model="post.activeJob._id" value="{{activeJob._id}}"  />
+                    </div>
+                  </div>
+
+                  <label  class="item item-input item-stacked-label file-input" ng-class="{'has-error':(post_form.budget.$submitted || post_form.budget.$touched && post_form.budget.$error.required ) || (post_form.budget.$submitted || post_form.budget.$touched && post_form.budget.$error.pattern) || (post_form.budget.$submitted || post_form.budget.$touched && post_form.budget.$error.maxlength)}">
+                    <span class="input-top job-zip dol_dv_span" style="padding-left:5px"><i class="ion-social-usd"></i></span>
+                    <input class="budget-input input-bug bug-cus" type="number" ng-model="post.budget" name="budget" placeholder="Budget" ng-pattern="/^\d{0,4}(\.\d{1,2})?$/" step="0.01"   required>
+                   
+                  </label>
+                 
+                 
+                 <div ng-show="post_form.budget.submitted || post_form.budget.$touched">
+                            <div class="post-form-error post-job-error-budget" ng-show="post_form.budget.$error.required" >
+                                  Please enter budget.
+                            </div>
+                            <div class="post-form-error post-job-error-budget" ng-show="post_form.budget.$error.pattern">This field can be at most 4 digits long.
+                            </div>
+                            <div class="post-form-error post-job-error-budget" ng-show="post.budget<10">
+                                    Budget must be greater than or equal to 10.
+                            </div>
+                            <!-- <div class="post-form-error post-job-error-budget" ng-show="post_form.budget.$error.maxlength">
+                                  This field can be at most 4 digits long.
+                            </div> -->
+                  </div>
+
+                  <div class="custom-radios" >
+
+                    <div class="radio-1" ng-click='getPriceType(0)' ng-class="{'radio-active': pricevalue=='0'}">
+                      <label>Fixed</label>
+                      <input type="radio" name="post.fixed" ng-model="post.fixed"/>
+                    </div>
+                    <div class="radio-1" ng-click='getPriceType(1)' ng-class="{'radio-active': pricevalue=='1'}">
+                      <label>Hourly</label>
+                      <input type="radio" name="post.hourly" ng-model="post.hourly"   />
+                    </div>
+                  </div>
+
+
+                  <label ng-if="pricevalue=='1'" class="item item-input item-stacked-label file-input" ng-class="{'has-error':(post_form.hours.$submitted || post_form.hours.$touched && post_form.hours.$error.required ) || (post_form.hours.$submitted || post_form.hours.$touched && post_form.hours.$error.pattern) || (post_form.hours.$submitted || post_form.hours.$touched && post_form.hours.$error.maxlength)}">
+                    <span class="input-top job-zip dol_dv_span" style="padding-left:5px"><i class="ion-social-usd"></i></span>
+                    <input class="budget-input input-bug hour" type="number" ng-model="post.hours" name="hours" placeholder="Hours" pattern="^(\d*([.,](?=\d{3}))?\d+)+((?!\2)[.,]\d\d)?$" ng-maxlength="4" required>
+                   
+                  </label>
+                 <div ng-show="post_form.hours.submitted || post_form.hours.$touched">
+                            <div class="post-form-error post-job-error-budget" ng-show="post_form.hours.$error.required" >
+                                  Please enter hours.
+                            </div>
+                            <div class="post-form-error post-job-error-budget" ng-show="post_form.hours.$error.pattern">Please enter valid hours.
+                            </div>
+                            <div class="post-form-error post-job-error-budget" ng-show="post_form.hours.$error.maxlength">
+                                  This field can be at most 4 digits long.
+                            </div>
+                  </div>
+
+                </div>
+
+
+                <div class="post-job">
+                    <button class="button post-button" ng-disabled="post_form.$invalid || (post.due_date|date:'yyyy-MM-dd')<=(currentDate | date:'yyyy-MM-dd') || (post.due_date|date:'yyyy-MM-dd')>=(maxDate | date:'yyyy-MM-dd') || post.budget<10">Post My Job</button>
+                </div>  
+            </div>
+        </div>
+      </form>
+    </div>
+  </ion-content>  
+</ion-view>

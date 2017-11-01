@@ -1,0 +1,132 @@
+
+<style>
+.right-chat {
+    margin-right: 0px !important;
+    margin-left: 28px !important;
+}
+.left-chat{
+   margin-right: 28px !important;
+    margin-left: 0px !important;
+}
+</style>
+<ion-view view-title="Send Message">
+
+<div class="top-chat" >
+      <div class="row">
+          <div class="col col-20">
+              <div class="mssenger-img" >
+
+             
+                  <img  
+                  src="{{profileImagePath}}{{userInfo.prof_image}}" err-src="img/user_default.jpg" alt=""/>
+                
+                </div>
+                
+            </div>
+            <div class="col col-80">
+              <div class="mssenger-name">
+
+                  <p>
+                      {{userInfo.first_name}} {{userInfo.last_name}}  
+                       <i ng-if="userInfo.userStatus=='online'" class="ion-android-call call-icon" ng-click="startCall(userInfo.first_name,userInfo.last_name,userInfo.prof_image)"></i>
+                  </p>
+                  <img ng-if="userInfo.userStatus=='online'" src="img/online.png">
+                  
+
+               
+                  <span class="direct-chat-text left-chat chat_direct" ng-show="typemessages.typemessages.length>0 && typemessages.typemessages!=undefined && typemessages.typemessages[0].fromId==userInfo._id">
+                  {{typemessages.typemessages[0].content}}
+                  
+
+
+ 
+                  </span>
+                  
+
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+  <ion-content class="home-page has-tabs msgManagement" delegate-handle="userMessageScroll"  >
+   
+  
+
+    <div class="profile-wrap top-space">
+        
+              <div class="box box-warning direct-chat direct-chat-primary">
+                <div class="box-body msglist">
+  
+
+                    <div class="direct-chat-messages" ng-repeat="msg in messages.message  | limitTo:numberOfMessageToDisplay track by $index  " ng-if="messages.message.length>0" data-scroll-to-top='messages.message.length'>
+   
+                  
+  
+                    <div class="direct-chat-msg-right right" ng-if="msg.senderid._id==userInformation._id" id="div{{$index}}" ng-click="scrollTop('div10')">
+                   
+
+                        <div class="direct-chat-info clearfix">
+                          
+                          <span class="direct-chat-timestamp pull-right">{{msg.created_date| date :'medium'}}</span>
+                        </div>
+                       
+                        <div class="direct-chat-text right-chat">
+                         {{msg.text}} </div>
+                        <!-- /.direct-chat-text -->
+                    </div>
+
+                    <div class="direct-chat-msg" ng-if="msg.recieverid==userInformation._id" id="div{{$index}}">
+                         <div class="direct-chat-info clearfix">
+                            
+                            <span class="direct-chat-timestamp">{{msg.created_date | date :'medium'}}</span>
+                         </div>
+                        <div class="direct-chat-text left-chat">
+                            {{msg.text}} 
+                        </div>
+                    </div>
+                     
+
+                    </div>
+
+                    <ion-infinite-scroll on-infinite="addMoreItem()" ng-if="messages.message.length > numberOfMessageToDisplay" >
+                          <ion-infinite-scroll-content
+                            loadingSpinner="bubbles"
+                            loadingText="Loading more data...">
+                          </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
+
+                  </div>
+
+              
+                  
+              
+                <!-- /.box-footer-->
+              </div>
+              <!--/.direct-chat -->
+          
+    </div>
+  </ion-content>
+  <div class="box-footer">
+
+                 <form name="form" class="comment-form row">
+                       <div class="col col-80">
+                          <div class="input-group">
+                            
+                              <textarea name="message"  ng-change="updateTyping(RecieverId)" id="comment" ng-model="replycomment" placeholder="Message..." class="form-control" required>
+                                </textarea>
+                                <div class="form-error" ng-show="form.message.$invalid && !form.message.$pristine" >
+                                       
+                                 </div>  
+                            </div>
+                        </div>
+                        <div class="col col-20">
+                          <span class="input-group-btn">
+                            <button class="send-btn" ng-disabled="form.message.$invalid" ng-click="postMessage(replycomment,msgId);replycomment=''" type="button" class="btn btn-warning btn-flat" ><i class="icon ion-android-send"></i></button>
+                          </span>
+                        </div>
+                      </form>  
+
+
+
+  </div>
+</ion-view>

@@ -1,0 +1,328 @@
+<ion-view view-title="My Jobs" ng-init="myjob()">
+<!-- <ion-view view-title="My Jobs"> -->
+<ion-nav-buttons side="right">
+    <a href="#/app/skills"><span class="right-side"><img src="img/add-job.png"><span>New Job</span></span></a>    
+</ion-nav-buttons>
+
+  <ion-content class="home-page has-tabs">
+    <div class="profile-wrap">
+        <div class="search-bar">
+            <div class="list">
+              <label class="item item-input" ng-init="blur='true'">
+                <input type="text"  ng-model="query"  id="searchbar">
+                <span ng-hide="query.length>0" class="input-top"><i class="icon ion-ios-search"></i>Search</span>
+              </label>
+            </div>
+        </div>
+        
+        <div class="your-Reviews offers" >
+             <h4 class="title-wrap myjob-title">Jobs I'm Working <a ng-if="(assingedJobs| filter:query).length >0" href="#/app/myjoblist/{{userInformation._id}}/2"><span class="add-offer" ng-if="assingedJobs.length >2">View All</span></a></h4>
+        </div>
+        <div class="your-Reviews findjobs myjob"> 
+            <ion-list class="offer-wrap find-wrap">
+            
+                <ion-item ng-repeat="job in (assingedJobs | filter:query | orderBy:propertyName:reverse | limitTo:numberOfItemsToshow)" class="no-padding">
+
+                     <div class="row cursor" ng-click="detailJob(job._id)">
+                     <!-- <div class="row cursor"> -->
+                            <div class="col-30">
+                                <div class="job-wrap left_img_p">
+                                    <div class="img-wrap item-avatar left_cir_img">
+                                    <span class="table-cell">
+                                      <img ng-if="job.category[0].icon" class="jobimage img-1" ng-src="{{skillIconImagePath}}{{job.category[0].icon}}" alt=""/>
+                                      <img class="jobimage img-1" ng-if="!job.category[0].icon" src="img/defaultpost.png" alt="">
+                                          
+                                    </span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-70 wd_100">
+                              <div class="title-box">
+                                  <h2 class="review-name  myjob-titl capitalize_title">{{job.title }}</h2>
+                                    <span class="accept">{{job.winner_offer[0].budget | currency}}</span>
+                                 </div>
+                                <div class="div-wrap">
+                                    <div class="price-accept">
+                                        <div class="loaction post-date">
+                                            <img alt="" src="img/small-msg.png"><span>Due : {{job.due_date | date}} </br> </span> 
+                                        </div>
+                                        <div class="loaction post-date my-jb-post">
+                                            <i class="locationicon icon ion-ios-location-outline"></i> <p> {{job.address}}</p>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="next form-next">
+                                        <a  href="#/app/viewjob/{{job._id}}"><i class="icon ion-chevron-right"></i></a>
+                                      
+                                        <div class="tags-display dis_tag">
+                                            <span ng-if="job.job_status==1" class="open">Open</span>
+                                            <span ng-if="job.job_status==2 && userInformation._id== job.creator._id" class="assigned">Assigned</span>
+                                            <span ng-if="job.job_status==2 && userInformation._id!= job.creator._id && job.work_status==1" class="assigned">Accepted</span>
+                                            <span ng-if="job.job_status==2 && userInformation._id!= job.creator._id && job.work_status==2" class="assigned">In Progress</span>
+                                            
+                                            <span ng-if="job.job_status==2 && userInformation._id!= job.creator._id && job.work_status==4" class="completed">Completed</span>
+
+                                            
+                                        </div>
+                                        
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                     </div>
+                     
+                     <div class="tags-display dis_tag tag_link" >
+                         <a ng-click="widgetExpanded = !widgetExpanded" class="head">  <i class="ion-plus" ng-if="widgetExpanded!=true"></i> <i class="ion-minus" ng-if="widgetExpanded==true"></i> Change Request</a>
+                     </div>
+                     <div class="row pos_rel1" ng-if="job.addtional_jobs.length==0">
+                       <div id="derp" ng-slide-down="widgetExpanded" lazy-render duration="1" class="slideable sliadble_1">
+                            <!-- <i class="ion-ios-close" ></i> -->
+                         <form name="myForm" novalidate  >
+                             <div class="list">
+                                  <label class="item item-input">
+                                      <input type="tel" name="budget" ng-model="addtional.budget" ng-pattern="/^\d{0,4}(\.\d{1,2})?$/"  mask="$99?9?9" mask-clean="true" placeholder="Price" required>
+                                      
+                                  </label>
+                                  <div ng-show="myForm.budget.submitted || myForm.budget.$touched">
+                                        <div class="add-error addionalr-post-job-error-budget" ng-show="myForm.budget.$error.required" >
+                                              Please enter budget.
+                                        </div>
+                                        <div class="add-error addional-post-job-error-budget p-add" ng-show="myForm.budget.$error.pattern">Please enter valid amount.
+                                        </div>
+                                        <div class="add-error addional-post-job-error-budget" ng-show="addtional.budget<10">
+                                                Budget must be greater than or equal to 10.
+                                        </div>
+                                  </div>
+                                  
+                                  <label class="item item-input">
+                                      <input type="text" name="description" ng-model="addtional.description"  placeholder="Enter description" required>
+                                  </label>
+                                  <div ng-show="myForm.description.submitted || myForm.description.$touched">
+                                        <div class="add-error addionalr-post-job-error-budget" ng-show="myForm.description.$error.required" >
+                                              Please enter description.
+                                        </div>
+                  
+                                  </div>
+                              </div>
+                              <div class="padding sub_drop_btn">
+                                  <button type="button" class="button post-button" ng-disabled="myForm.$invalid" ng-click="addtionalRequest(job,addtional)">Submit</button>
+                              </div>
+                                 <div class="add_prs"></div>
+                          </form>
+                          
+                          
+                       </div>  
+
+                    </div>
+                    <div class="row pos_rel1" ng-if="job.addtional_jobs.length==1">
+                      <div id="derp" ng-slide-down="widgetExpanded" lazy-render duration="1" class="slideable sliadble_1 slides_1">
+                          <div class="alert_msg">
+                               <span><i class="ion-checkmark-circled" ></i>Change request has been done!</span>
+                          </div>
+                      </div>
+                    </div>
+                    <ion-option-button ng-if="job.job_status==1" class="button-positive"
+                              ng-click="editjob(job._id)"
+                                       >
+                       Edit
+                    
+                    </ion-option-button>
+                    <ion-option-button ng-if="job.job_status==1" class="button-assertive"
+                                       ng-click="deletejob(job._id)">
+                      Delete
+                    </ion-option-button>   
+                </ion-item>
+               
+            </ion-list>
+            
+
+        </div>
+        <div class="row responsive-sm" ng-show="assingedJobs.length ==0 || query.length>0 && (assingedJobs | filter:query | orderBy:propertyName:reverse | limitTo:numberOfItemsToshow).length==0">
+                  <div class="col">
+                    <h1  class="nothing-found-myjob-block">
+                      No Jobs Listed.
+                    </h1>
+                  </div>
+        </div>
+        
+        
+        <div class="your-Reviews offers">
+             <h4 class="title-wrap myjob-title">Jobs I’ve Posted<a ng-if="(jobs| filter:query).length >0" href="#/app/myjoblist/{{userInformation._id}}/1"><span class="add-offer" ng-if="jobs.length >2">View All</span></a></h4>
+        </div>
+        <div class="your-Reviews findjobs myjob"> 
+            <ion-list class="offer-wrap find-wrap">
+                <ion-item ng-repeat="job in jobs | filter:query | orderBy:propertyName:reverse | limitTo:numberOfItemsToshow" class="no-padding" >
+               
+                     <!-- <div class="row" ng-if="(job.due_date | date) >= (currentDate | date)"> -->
+                    
+                     <div class="row cursor" ng-click="detailJob(job._id)" >
+                            <div class="col-30">
+                                <div class="job-wrap left_img_p">
+                                    <div class="img-wrap item-avatar left_cir_img">
+                                    <span class="table-cell">
+                                      <img ng-if="job.category[0].icon" class="jobimage img-1" ng-src="{{skillIconImagePath}}{{job.category[0].icon}}" alt=""/>
+                                      <img class="jobimage img-1" ng-if="!job.category[0].icon" src="img/defaultpost.png" alt="">
+                                          
+                                    </span>
+                                        
+                                        <!-- <span class="msg-count" ng-if="job.offers.length>0">{{job.offers.length}}</span> -->
+
+                                         <span class="msg-count" ng-if="(job.offers|filter:{is_read:false}).length>0">{{(job.offers|filter:{is_read:false}).length}}</span>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-70 wd_100">
+                              <div class="title-box">
+                              
+                                  <h2 class="review-name capitalize_title">{{job.title}}</h2>
+                                    <span class="accept"  ng-if="job.job_status==1">{{job.budget | currency}}</span>
+                                    <span class="accept"  ng-if="job.job_status!=1">{{job.winner_offer[0].budget | currency}}</span>
+                                </div>
+                                <div class="div-wrap">
+                                    <div class="price-accept">
+                                        <div class="loaction post-date">
+                                            <img alt="" src="img/small-msg.png"><span>Due : {{job.due_date | date}} </br> </span>
+                                        </div>
+                                        <div class="loaction post-date my-jb-post">
+                                            <i class="locationicon icon ion-ios-location-outline"></i> <p> {{job.address}}</p>
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="next">
+                                        <a  href="#/app/viewjob/{{job._id}}"><i class="icon ion-chevron-right"></i></a>
+                                        <div class="tags-display dis_tag">
+                                            <span ng-if="job.job_status==1 && !(job.due_date |dateCompare)" class="open">Open</span>
+                                        <span ng-if="job.job_status==1 && (job.due_date |dateCompare)" class="overdue">Overdue</span>
+                                            <span ng-if="job.job_status==2" class="assigned">Assigned</span>
+                                            <span ng-if="job.job_status==3" class="completed">Completed</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                     </div>
+
+                    <div ng-if="job.addtional_jobs.length>0 && job.addtional_jobs[0].job_status==1 && job.worker_payment[0].status!='paid'">  
+                     <div class="tags-display dis_tag tag_link">
+                         <a ng-click="widgetExpanded = !widgetExpanded" class="head" > <i class="ion-plus" ng-if="widgetExpanded!=true"></i> <i class="ion-minus" ng-if="widgetExpanded==true"></i> Change Request</a>
+                     </div>
+                    
+
+                     <div class="row pos_rel1 new_req">
+
+                       <div id="derp" ng-slide-down="widgetExpanded" lazy-render duration="1" class="slideable sliadble_1 sec_opt " >
+                            <!-- <i class="ion-ios-close"></i> -->
+                             <div class="list">
+                                  <label>Requested job </label>
+                                  <p class="req_price">{{job.addtional_jobs[0].budget | currency}}</p>
+                                  <p>{{job.addtional_jobs[0].description}}</p>
+                             </div>
+                             <div class="padding sub_drop_btn">
+                                <button type="button" class="button post-button" ng-disabled="myForm.$invalid" ng-click="acceptOffer(job._id,job.addtional_jobs[0].budget)">Approve</button>
+                              </div>
+                                             
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <ion-option-button ng-if="job.job_status==1" class="button-positive"
+                              ng-click="editjob(job._id)">
+                       Edit
+                    
+                    </ion-option-button>
+                    <ion-option-button ng-if="job.job_status==1" class="button-assertive"
+                                       ng-click="deletejob(job._id)">
+                      Delete
+                    </ion-option-button>   
+                </ion-item>
+               
+            </ion-list>
+        </div>
+
+        <div class="row responsive-sm" ng-show="jobs.length>0 && query.length>0 && (jobs | filter:query | orderBy:propertyName:reverse | limitTo:numberOfItemsToshow).length==0" ng-init="myVar=true">
+                  <div class="col" ng-init="myVar=query.length>0 && (jobs | filter:query | orderBy:propertyName:reverse | limitTo:numberOfItemsToshow).length==0">
+                    <h1  class="nothing-found-myjob-block">
+                         No Jobs Listed.
+                    </h1>
+                  </div>
+        </div>
+     
+        
+        <div class="row responsive-sm" ng-show="jobs.length==0 || myVar">
+                  <div class="col">
+                    <h1 class="nothing-found-myjob-block">
+                       You haven’t posted any jobs yet. To post your first job,  <a style="text-decoration:none" href="#/app/skills" class="activated"><span class="right-side"><span class="clink" >click here.</span></span></a>
+                    </h1>
+                  </div>
+        </div>
+        <!-- <div class="your-Reviews offers ">
+             <h4 class="title-wrap myjob-title">Jobs I've Completed <a ng-if="(completedJob| filter:query).length>0" href="#/app/myjoblist/{{userInformation._id}}/3"><span class="add-offer" ng-if="completedJob.length >=2">View all</span></a></h4>
+        </div> -->
+
+       <!--  <div class="your-Reviews findjobs myjob"> 
+             <ion-list class="offer-wrap find-wrap">
+
+                <ion-item  class="no-padding" ng-repeat="job in completedJob  | filter:query |limitTo:numberOfItemsToDisplay" >
+
+                    <div class="row cursor" ng-click="detailJob(job._id)">
+                            <div class="col-30">
+                                <div class="job-wrap left_img_p">
+                                    <div class="img-wrap item-avatar left_cir_img">
+                                    <span class="table-cell">
+                                      <img ng-if="job.category[0].icon" class="jobimage img-1" ng-src="{{skillIconImagePath}}{{job.category[0].icon}}" alt=""/>
+                                      <img class="jobimage img-1" ng-if="!job.category[0].icon" src="img/defaultpost.png" alt="">
+                                          
+                                    </span>
+                             
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-70">
+                              <div class="title-box ">
+                                  <h2 class="review-name capitalize_title">{{job.title}}</h2>
+                                    <span class="accept">{{job.winner_offer[0].budget | currency}}</span>
+                                </div>
+                                <div class="div-wrap">
+                                    <div class="price-accept">
+                                        <div class="loaction post-date">
+                                            <img alt="" src="img/small-msg.png"><span>Due : {{job.due_date | date}} </br></span>
+                                        </div>
+                                        <div class="loaction post-date my-jb-post">
+                                            <i class="locationicon icon ion-ios-location-outline"></i> <p> {{job.address}}</p>
+                                        </div>
+                                      
+                                    </div>
+                                    <div class="next">
+                                        <a  href="#/app/viewjob/{{job._id}}"><i class="icon ion-chevron-right"></i></a>
+                                        <div class="tags-display dis_tag">
+                                            <span  class="completed">Completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                     </div>
+               </ion-item>
+             </ion-list>
+
+        </div> -->
+        
+         <!-- <div class="row responsive-sm" ng-show="completedJob.length==0 ||  query.length>0 && (completedJob | filter:query | orderBy:propertyName:reverse | limitTo:numberOfItemsToDisplay).length==0">
+                  <div class="col">
+                    <h1 n class="nothing-found-myjob-block">
+                       No Jobs Listed
+                    </h1>
+                  </div>
+        </div> -->
+       
+
+    </div>
+  </ion-content>
+ 
+</ion-view>

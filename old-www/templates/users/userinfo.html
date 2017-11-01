@@ -1,0 +1,73 @@
+<ion-modal-view class="rate-modal review-modal">
+  <ion-content>
+
+    <div class="review-form userinfo-form">
+      <a href="javascript:void(0)" class="close-modal" ng-click="closeLogin()"><i class="ion-close-circled"></i></a>
+     <div class="row">
+      
+                <div class="col-20">
+                    <div class="item item-avatar">
+                      <!-- ngIf: !review.job_author_id.prof_image -->
+                      <img ng-src="{{profileImagePath}}{{userInfo.prof_image}}" err-src="img/user_default.jpg">
+                    </div>
+                </div>
+                
+                <div class="col-80">
+                     
+                    <h2 class="review-name cur ng-binding" >{{userInfo.first_name | capitalize }} {{userInfo.last_name | capitalize }}.</h2>
+                    <span>{{userInfo.about_me}}</span>
+                    
+                      <ul class="icon-list user-rating" ng-if="profile_rating_plus">
+
+                    
+                    <li ng-repeat="i in getNumber(profile_rating_plus) track by $index">
+                       <i class="icon ion-ios-star"></i>
+                        
+                    </li>
+                    
+                    
+                    <li ng-if="profile_rating_half">
+                        
+                            <i class="icon ion-ios-star-half"></i>
+                        
+                    </li>
+                    <li ng-repeat="i in getNumber(profile_rating_loss) track by $index">
+                       
+                            <i class="icon ion-ios-star-outline"></i>
+                        
+                    </li>
+                    
+               </ul>
+
+               <ul class="icon-list user-rating" ng-if="!profile_rating_plus">
+                    
+                   
+                    <li>
+                        
+                            <i class="icon ion-ios-star-outline"></i>
+                       
+                    </li><li>
+                        
+                            <i class="icon ion-ios-star-outline"></i>
+                      
+                    </li><li>
+                        
+                            <i class="icon ion-ios-star-outline"></i>
+                        
+                    </li><li>
+                        
+                            <i class="icon ion-ios-star-outline"></i>
+                       
+                    </li>
+                    <li>
+                        
+                            <i class="icon ion-ios-star-outline"></i>
+                        
+                    </li>
+                    
+                   </ul>
+                </div>
+            </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

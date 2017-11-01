@@ -1,0 +1,66 @@
+<ion-view view-title="Your Skills">
+    <ion-content class="has-tabs">
+      <ion-list class="skill_dv">
+         <ion-item class="item item-icon-left item-icon-right skills_dv1" ng-repeat="skill in skillData" >
+            <div class="arrow_dv" ng-click="isshowhide_new($index)" ng-if="skill.subSkills.length>0" >
+                <span class="capitalize_title">{{skill.skill}}</span>
+                <i class="icon ion-chevron-down icon-accessory" ng-show="isbox_{{$index}}"></i>
+                <i class="icon ion-chevron-up icon-accessory" ng-show="!isbox_{{$index}}"></i>
+
+                
+            </div>
+            <!-- <ion-checkbox ng-if="skill.subSkills.length==0" ng-model="profile.tags[skill._id]" ng-click="selectSkill(skill._id)" ng-checked="{{skill.used}}">{{skill.skill}}</ion-checkbox> -->
+            <div class="arrow_dv" ng-if="skill.subSkills.length==0" ng-click="selectSkill(skill._id)" >
+             <span class="capitalize_title">{{skill.skill}}</span>
+            <i class="icon ion-checkmark icon-accessory" ng-show="skill.used" ></i>
+            </div>
+            <!-- <div class="arrow_dv"  ng-if="skill.subSkills.length==0" >
+            {{skill.skill}}
+            <i class="icon ion-checkmark icon-accessory"  ng-click="selectSkill(skill._id)" ></i>
+            </div> -->
+
+            
+          <div ng-show="isbox_{{$index}}" class="show_dv">
+
+             <div ng-repeat="skills in skill.subSkills" class="ng_rpt_dv" ng-if="!skills.is_deleted">
+
+             <img src="img/checked_tick.png" ng-show="skills.used" class="settrue  cursur fa fa-check-square-o fa-1x" title="Used on this Objective" data-ng-click="selectSkill(skills._id)">
+
+            <img src="img/unchecked.png" ng-hide="skills.used" class="settrue  cursur fa fa-square-o fa-1x ng-hide" title="Not on this Objective" data-ng-click="selectSkill(skills._id)">
+            <label class="ng_rpt_lbl capitalize_title" for="{{skills._id}}" data-ng-click="selectSkill(skills._id)">{{skills.skill}}</label>
+
+
+               
+               <!-- <input type="checkbox" id="{{skills._id}}"  ng-model="profile.tags[skills._id]"  ng-click="selectSkill(skills._id)" value="{{skills._id}}" ng-checked="{{skills.used}}" />
+                          <label for="{{skills._id}}">{{skills.skill}}{{skills.length}}</label> -->
+               <!-- <label for="{{subSkill._id}}">{{subSkill.skill}}</label> -->
+
+            </div>              
+          </div>
+           
+        </ion-item>
+        
+
+      </ion-list>
+    <!--   <div class="row">
+                    <div class="col">
+                      <button  ng-disabled="profile_form.$invalid"  ng-click="addprofile(profile)" class="button button-block login-btn">
+                         SAVE
+                      </button>
+                    </div>
+                  </div> -->
+
+    </ion-content>
+
+    <div class="bar bar-footer home-footer">
+
+<div style="float: left;width: 100%;" class="sub_btn1" ng-click="addprofile(profile)">
+    <ion-fab right bottom  style="position: relative;float: left;width: 100%;">
+    <button ion-fab color="light" style="position: absolute;bottom: 49px;right: 10px;background-color: #28963c;border: none;height: 50px;width: 50px;border-radius: 50%;">
+    <i class="ion-chevron-right" ></i>
+  </ion-fab>
+                    
+              </div>
+</div>
+</ion-view>
+
